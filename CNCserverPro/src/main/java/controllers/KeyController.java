@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import Payment.CreditCard;
 import Payment.PaymentProcess;
 import entities.KeyEntity;
 import repositories.KeyRepository;
@@ -24,7 +26,7 @@ public class KeyController {
 	}
 
 	// GET
-	@GetMapping("/findKey")
+	@GetMapping("/startEncryptProcess")
 	public KeyEntity<?> findKey(@RequestParam String ip) {
 		@SuppressWarnings("rawtypes")
 		Optional<KeyEntity> key = repository.findById(ip);
@@ -32,14 +34,12 @@ public class KeyController {
 
 	}
 	@GetMapping("/paymentProcess")
-	public KeyEntity<?> getKey(@RequestParam String ip)
+	public KeyEntity<?> getKey(@RequestParam CreditCard cr,@RequestParam String ip)
 	{
 		PaymentProcess clientPayment=new PaymentProcess();
 		if (clientPayment.isPaid())
 		{
-		@SuppressWarnings("rawtypes")
-		Optional<KeyEntity> key = repository.findById(ip);
-		return key.get();
+			findKey(ip);
 		}
 		return null;
 	}
