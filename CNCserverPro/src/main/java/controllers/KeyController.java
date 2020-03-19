@@ -21,11 +21,11 @@ public class KeyController {
 	private KeyRepository repository;
 
 
-	private void gotRequest(@RequestParam String ip) {
+	public void gotRequest(@RequestParam String ip) {
 		CreateKeys ck = new CreateKeys();
 		KeyManagement<SecretKeySpec> km = new KeyManagement<SecretKeySpec>();
 		String algorithm = ck.randomAlgorithm(); // Server decides the algorithm
-		SecretKeySpec clientKey = km.createKey(ip, algorithm); // The key
+		SecretKeySpec clientKey = km.createKey(algorithm); // The key
 		km.save(new KeyEntity<SecretKeySpec>(ip, clientKey, algorithm)); // Save to DB
 	}
 

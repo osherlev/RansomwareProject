@@ -9,7 +9,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 public class CreateKeys {
-	public <T> SecretKey keyMaker(String chosenAlgorithm) {
+	public SecretKey keyMaker(String chosenAlgorithm) {
 
 		KeyGenerator keyGen = null;
 		try {

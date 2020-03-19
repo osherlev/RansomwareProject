@@ -12,7 +12,7 @@ public class PaymentProcess {
 	}
 
 	public boolean isPaid() {
-		return false;
+		return true;
 
 	}
 }

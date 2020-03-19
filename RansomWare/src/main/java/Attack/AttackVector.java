@@ -12,8 +12,8 @@ public class AttackVector implements SpreadRansom {
 			if (directory.getName() == file.getName()) {
 				return true;
 			}
-		}
-		return false;
+		}return false;
+		
 
 	}
 

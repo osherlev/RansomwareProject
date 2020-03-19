@@ -9,7 +9,7 @@ public class KeyManagement<T> {
 	private KeyRepository repository;
 
 	@SuppressWarnings("unchecked")
-	public T createKey(String ip, String Encalgo) {
+	public T createKey(String Encalgo) {
 		CreateKeys clientKey = new CreateKeys();
 		SecretKey key = clientKey.keyMaker(Encalgo);
 		return (T) key;

