@@ -1,19 +1,21 @@
 package keys;
 
 import javax.crypto.SecretKey;
+import javax.inject.Inject;
 import repositories.KeyRepository;
 import entities.KeyEntity;
-
 public class KeyManagement<T> {
-
+	@Inject
 	private KeyRepository repository;
 
-	public void save() {
-
+	@SuppressWarnings("unchecked")
+	public T createKey(String ip, String Encalgo) {
 		CreateKeys clientKey = new CreateKeys();
-		SecretKey k = clientKey.createKey();
-		@SuppressWarnings("unchecked")
-		KeyEntity<T> entity = new KeyEntity<T>(clientKey.getClientIp(), (T) k, k.getAlgorithm());
+		SecretKey key = clientKey.keyMaker(Encalgo);
+		return (T) key;
+	}
+
+	public void save(KeyEntity<T> entity) {
 		repository.save(entity);
 
 	}

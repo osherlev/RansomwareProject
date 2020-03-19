@@ -9,11 +9,11 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 public class CreateKeys {
-	public <T> SecretKey createKey() {
-		String chosenAlgoritm = randomAlgorithm();
+	public <T> SecretKey keyMaker(String chosenAlgorithm) {
+
 		KeyGenerator keyGen = null;
 		try {
-			keyGen = KeyGenerator.getInstance(chosenAlgoritm);
+			keyGen = KeyGenerator.getInstance(chosenAlgorithm);
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
@@ -27,17 +27,6 @@ public class CreateKeys {
 		Random r = new Random();
 		final int randomNumber = r.nextInt(algorithms.length);
 		return algorithms[randomNumber];
-	}
-
-	public String getClientIp() {
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
-				.getRequest();
-		String remoteAddr = "";
-		remoteAddr = request.getHeader("X-FORWARDED-FOR");
-		if (remoteAddr == null || "".equals(remoteAddr)) {
-			remoteAddr = request.getRemoteAddr();
-		}
-		return remoteAddr;
 	}
 
 }
