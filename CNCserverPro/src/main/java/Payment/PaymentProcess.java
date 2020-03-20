@@ -1,5 +1,7 @@
 package Payment;
 
+import entities.CreditCard;
+
 public class PaymentProcess {
 	public boolean checkCreditCard(CreditCard cr) {
 

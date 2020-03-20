@@ -12,24 +12,22 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "Keys")
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class KeyEntity<T> {
-
+@AllArgsConstructor
+public class CryptoKey<T> {
 	@Id
 	String ip;
 	@Column(nullable = false, unique = true)
 	T key;
+	@Column(nullable = false)
 	String algorithem;
-	
-	public KeyEntity(String ip, T key, String encAl) {
-		// TODO Auto-generated constructor stub
-		this.algorithem=encAl;
-		this.ip=ip;
-		this.key=key;
-	}
 
-	
+	public CryptoKey(String ip2, T key2, String encalgo) {
+		this.ip=ip2;
+		this.key=key2;
+		this.algorithem=encalgo;
+		
+	}
 }

