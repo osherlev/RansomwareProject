@@ -20,7 +20,7 @@ public class KeyController {
 	private KeyRepository repository;
 
 	private String randomAlgorithm() {
-		Collection<String> algorithmsCollection ;
+		
 		String[] algorithms = { "AES", "desede", "Blowfish", "twofish" };
 		SecureRandom rand = new SecureRandom();
 		int a = rand.nextInt(algorithms.length);

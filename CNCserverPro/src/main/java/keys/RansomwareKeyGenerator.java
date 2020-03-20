@@ -22,7 +22,7 @@ public class RansomwareKeyGenerator<T> {
 		// Initializing the KeyGenerator
 		keyGen.init(secRandom);
 
-		// Creating/Generating a key
+		// Generating a key
 		Key key = keyGen.generateKey();
 		return (T) key.toString();
 
