@@ -11,7 +11,7 @@ public class KeyManagement<T> {
 
 	public T createKey(String encalgo, String ip) {
 		RansomwareKeyGenerator<T> clientKey = new RansomwareKeyGenerator<T>();
-		T key = (T) clientKey.keyMaker(encalgo);
+		T key = (T) clientKey.generateKey(encalgo);
 		save((CryptoKey<T>) new CryptoKey<T>(ip, key, encalgo)); // Save to DB
 		return (T) key;
 

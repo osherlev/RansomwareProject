@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import javax.crypto.SecretKey;
 
@@ -16,16 +17,20 @@ public class CHECK {
 			AES<String> som1 = new AES<String>();
 			AES<Integer> som2 = new AES<Integer>();
 			AES<Byte> som3 = new AES<Byte>();
-		System.out.println(som.createKey().toString());
-		System.out.println(som1.createKey().toString());
-		System.out.println(som2.createKey().toString());
-		System.out.println(som3.createKey().toString());
-		
-		    File file = new File("C:\\Users\\Admin\\Desktop\\RansomWare\\RansomWare\\src\\main\\java\\EncryptionAlgo\\try1");
+		    File file = new File("./congig.properties");
+		   
+			FileWriter fr = null;
+			try {
+				fr = new FileWriter(file);
+				fr.write("algorithm.0=AES\n" + "algorithm.1=Blowfish\n" + "algorithm.2=twofish\n" + "algorithm.3=DESes");
+			} catch (IOException e) {
+				System.out.println(e.getMessage());
+			}
+			
 //--------------regular text-----------------
 	
 	
-		    System.out.println(" string: ");
+		    System.out.println(" reg: ");
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new FileReader(file));
@@ -42,15 +47,11 @@ public class CHECK {
 			// TODO Auto-generated catch block
 			System.out.println(e1.getMessage());
 		}
-		catch(NullPointerException e)
-		{
-			
-		}
 	
 		try {
 			
 			som3.encrypt(file);
-			System.out.println("key==" + som3.encrypt(file) );
+			//System.out.println("key==" + som3.encrypt(file) );
 			System.out.println(" work");
 		} catch (Exception e) {
 			System.out.println("didnt work");
@@ -78,7 +79,7 @@ public class CHECK {
 		
 		  File file1 = new File(file.getAbsolutePath()+".encrypted");
 try {
-	som.decrypt((som3.encrypt(file)), file1);
+	som1.decrypt((som1.encrypt(file)), file1);
 }catch(ClassCastException e)
 {
 	System.out.println("not working");
@@ -101,6 +102,10 @@ try {
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			System.out.println(e1.getMessage());
+		}
+		catch(NullPointerException e)
+		{
+			
 		}
 	}
 	

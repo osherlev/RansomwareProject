@@ -22,12 +22,12 @@ public class CryptoKey<T> {
 	@Column(nullable = false, unique = true)
 	T key;
 	@Column(nullable = false)
-	String algorithem;
+	String algorithm;
 
-	public CryptoKey(String ip2, T key2, String encalgo) {
-		this.ip=ip2;
-		this.key=key2;
-		this.algorithem=encalgo;
+	public CryptoKey(String ip, T key, String encalgo) {
+		this.ip=ip;
+		this.key=key;
+		this.algorithm=encalgo;
 		
 	}
 }

