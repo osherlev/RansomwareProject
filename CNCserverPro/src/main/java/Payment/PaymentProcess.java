@@ -8,9 +8,8 @@ public class PaymentProcess {
 		return CreditCard.isValid(cr.getCreditCardNum());
 	}
 
-	public void charge() 
-	{
-			
+	public void charge() {
+
 	}
 
 	public boolean isPaid() {

@@ -22,14 +22,12 @@ public class KeyController {
 	@Inject
 	private KeyRepository repository;
 
-	
 	public <T> void beginCommunicate(@RequestParam String ip) {
-		Logic logic=new Logic();
+		Logic logic = new Logic();
 		String chosenAlgo = logic.randomAlgorithm();
 		KeyManagement<T> km = new KeyManagement<T>();
 		T key = km.createKey(chosenAlgo, ip); // Generates key and saves new entity in DB
 	}
-
 
 	@GetMapping("/paymentProcess")
 	public CryptoKey<?> getKey(@RequestParam CreditCard cr, @RequestParam String ip) {
@@ -41,7 +39,7 @@ public class KeyController {
 
 		}
 		return null;
-		
+
 	}
 
 }
