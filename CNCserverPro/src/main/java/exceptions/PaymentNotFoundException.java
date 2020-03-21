@@ -1,14 +1,13 @@
 package exceptions;
 
-import entities.CreditCard;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-public class PaymentNotFoundException extends RuntimeException {
-
-	private static final long serialVersionUID = 1L;
+@ResponseStatus(code = HttpStatus.PAYMENT_REQUIRED)
+public class PaymentNotFoundException extends RansomwareException {
 
 	public PaymentNotFoundException() {
-		super("you didn't pay bitch : ");
+		super("you didn't pay bitch");
 	}
-
 
 }

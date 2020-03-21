@@ -19,7 +19,7 @@ import lombok.Setter;
 public class CryptoKey<T> {
 	@Id
 	String ip;
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	T key;
 	@Column(nullable = false)
 	String algorithm;
