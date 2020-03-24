@@ -10,12 +10,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @Table(name = "Keys")
 @NoArgsConstructor
+@AllArgsConstructor
+@Entity
 @Getter
 @Setter
-@AllArgsConstructor
 public class CryptoKey<T> {
 	@Id
 	String ip;
@@ -25,9 +25,22 @@ public class CryptoKey<T> {
 	String algorithm;
 
 	public CryptoKey(String ip, T key, String encalgo) {
-		this.ip=ip;
-		this.key=key;
-		this.algorithm=encalgo;
-		
+		this.ip = ip;
+		this.key = key;
+		this.algorithm = encalgo;
+
 	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public T getKey() {
+		return key;
+	}
+
+	public String getAlgorithm() {
+		return algorithm;
+	}
+
 }
