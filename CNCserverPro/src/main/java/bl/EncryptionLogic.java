@@ -5,24 +5,26 @@ import org.springframework.beans.factory.annotation.Value;
 
 import keys.KeyManagement;
 
-//@Configuration
 public class EncryptionLogic {
-
 	@Value("${algorithms.arr}")
-	private String[] algorithms;
+	private String[] algorithmsArr;
+
+	public String[] getArr() {
+		return algorithmsArr;
+	}
 
 	public void makeConfigFiles() {
 		configuration configfile = new configuration();
 		configfile.configFileMaker();
+
 	}
 
-	
 	public String randomAlgorithm() {
 
 		SecureRandom rand = new SecureRandom();
 		try {
-			int a = rand.nextInt(algorithms.length);
-			return algorithms[a];
+			int a = rand.nextInt(algorithmsArr.length);
+			return algorithmsArr[a];
 		} catch (NullPointerException e) {
 
 		}
