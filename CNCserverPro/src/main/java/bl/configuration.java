@@ -5,10 +5,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 @Configuration
+@PropertySource("classpath=application.properties")
 public class configuration {
 
 	
@@ -17,10 +18,9 @@ public class configuration {
 		FileWriter writer = null;
 		File configFile = new File(".\\src\\main\\resources\\application.properties");
 		Properties prop = new Properties();
-		// prop.setProperty("algorithm.0", "AES");
-		// prop.setProperty("algorithm.1", "Blowfish");
-		// prop.setProperty("algorithm.2", "twofish");
-		// prop.setProperty("algorithm.3", "DESes");
+		prop.setProperty("db.url", "localhost");
+		prop.setProperty("db.user", "root");
+		prop.setProperty("db.password", "root");
 		prop.setProperty("algorithms.arr", "AES,Blowfish,twofish,DESes");
 		
 		try {
