@@ -1,4 +1,4 @@
-package controllers;
+package server.controllers;
 
 import java.util.Optional;
 import javax.inject.Inject;
@@ -10,13 +10,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import Payment.PaymentProcess;
-import bl.*;
+import Payment.Bitcoin;
+import server.bl.*;
 
-import entities.CreditCard;
-import entities.CryptoKey;
-import exceptions.PaymentNotFoundException;
-import repositories.KeyRepository;
+import server.entities.CryptoKey;
+import server.exceptions.PaymentNotFoundException;
+import server.repositories.KeyRepository;
 
 @RestController
 public class KeyController {
@@ -32,14 +31,11 @@ public class KeyController {
 
 	@GetMapping("/buyKey")
 	@RequestMapping(method = RequestMethod.GET)
-	public CryptoKey<?> getKey(@RequestParam CreditCard cr, @RequestParam String ip) throws PaymentNotFoundException {
-		PaymentProcess clientPayment = new PaymentProcess();
-		if (clientPayment.isPaid()) {
-			Optional<CryptoKey> key = repository.findById(ip);
-			return key.get();
+	public CryptoKey<?> getKey(@RequestParam String ip) throws NullPointerException {
 
-		}
-		throw new PaymentNotFoundException();
+		Optional<CryptoKey> key = repository.findById(ip);
+		return key.get();
+
 	}
 
 }

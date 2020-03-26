@@ -1,4 +1,4 @@
-package exceptions;
+package server.exceptions;
 
 public class RansomwareException extends Exception {
 

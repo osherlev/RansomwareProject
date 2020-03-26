@@ -1,9 +1,9 @@
-package keys;
+package server.keys;
 
 import javax.inject.Inject;
 
-import repositories.KeyRepository;
-import entities.CryptoKey;
+import server.repositories.KeyRepository;
+import server.entities.CryptoKey;
 
 public class KeyManagement {
 	@Inject
