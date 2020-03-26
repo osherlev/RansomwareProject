@@ -31,16 +31,6 @@ public class CryptoKey<T> {
 
 	}
 
-	public String getIp() {
-		return ip;
-	}
-
-	public T getKey() {
-		return key;
-	}
-
-	public String getAlgorithm() {
-		return algorithm;
-	}
+	
 
 }
