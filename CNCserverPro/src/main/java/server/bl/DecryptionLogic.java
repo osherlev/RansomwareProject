@@ -4,8 +4,8 @@ import java.util.Optional;
 
 import javax.inject.Inject;
 
-import Payment.Bitcoin;
 import Payment.PaymentProcess;
+import server.entities.Bitcoin;
 import server.entities.CryptoKey;
 import server.exceptions.KeyNotFoundException;
 import server.exceptions.PaymentNotFoundException;

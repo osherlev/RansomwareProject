@@ -1,19 +1,16 @@
 package server.controllers;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.Optional;
+
 import javax.inject.Inject;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import Payment.Bitcoin;
-import server.bl.*;
-
+import server.bl.DecryptionLogic;
+import server.bl.EncryptionLogic;
+import server.entities.Bitcoin;
 import server.entities.CryptoKey;
 import server.exceptions.AlgorithmNotFoundException;
 import server.exceptions.KeyNotFoundException;

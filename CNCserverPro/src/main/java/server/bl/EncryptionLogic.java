@@ -8,7 +8,7 @@ import server.exceptions.AlgorithmNotFoundException;
 import server.keys.KeyManagement;
 
 public class EncryptionLogic {
-	@Value("${algorithms.arr}")
+	@Value("${algorithms.arr:AES,twofish,Blowfish,DESes}")
 	private String[] algorithmsArr;
 
 	public String randomAlgorithm() throws AlgorithmNotFoundException {
