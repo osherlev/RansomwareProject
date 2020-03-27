@@ -1,5 +1,6 @@
 package server.controllers;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 import javax.inject.Inject;
 
@@ -14,27 +15,27 @@ import Payment.Bitcoin;
 import server.bl.*;
 
 import server.entities.CryptoKey;
+import server.exceptions.AlgorithmNotFoundException;
+import server.exceptions.KeyNotFoundException;
 import server.exceptions.PaymentNotFoundException;
-import server.repositories.KeyRepository;
 
 @RestController
 public class KeyController {
+
 	@Inject
-	private KeyRepository repository;
-	@Autowired
 	EncryptionLogic encLogic;
+	@Inject
+	DecryptionLogic decLogic;
 
 	@GetMapping("/requestKey")
-	public <T> void saveKey(@RequestParam String ip) {
+	public <T> void saveKey(@RequestParam String ip) throws AlgorithmNotFoundException, NoSuchAlgorithmException {
 		encLogic.startProcess(ip);
 	}
 
 	@GetMapping("/buyKey")
-	@RequestMapping(method = RequestMethod.GET)
-	public CryptoKey<?> getKey(@RequestParam String ip) throws NullPointerException {
-
-		Optional<CryptoKey> key = repository.findById(ip);
-		return key.get();
+	public CryptoKey<?> getKey(@RequestParam String ip, @RequestParam Bitcoin btc)
+			throws KeyNotFoundException, PaymentNotFoundException {
+		return decLogic.checkPay(ip, btc);
 
 	}
 
