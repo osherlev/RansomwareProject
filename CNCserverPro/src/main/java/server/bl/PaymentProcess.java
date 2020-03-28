@@ -1,16 +1,15 @@
-package server.Payment;
-
-
+package server.bl;
 
 public class PaymentProcess {
 
 
-	public void charge() {
-
+	public void charge() 
+	{
+			
 	}
 
 	public boolean isPaid() {
-		return true;
+		return false;
 
 	}
 }

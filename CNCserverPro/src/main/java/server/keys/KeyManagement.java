@@ -12,19 +12,12 @@ public class KeyManagement {
 	@Inject
 	private KeyRepository repository;
 	@Inject
-	private RansomwareKeyGenerator<?> clientKey;
+	private RansomwareKeyGenerator _generator;
 
-	public <T> T createKey(String encalgo, String ip) throws AlgorithmNotFoundException, NoSuchAlgorithmException {
-		
-		T key = (T) clientKey.generateKey(encalgo);
-		save(new CryptoKey<T>(ip, key, encalgo)); // Save to DB
-		return (T) key;
+	public <T> CryptoKey<T> createAndSaveKey(String encalgo, String ip)
+			throws AlgorithmNotFoundException, NoSuchAlgorithmException {
 
-	}
-
-	public void save(CryptoKey entity) {
-		repository.save(entity);
+		return (repository.save(new CryptoKey<T>(ip, (T) _generator.generateKey(encalgo), encalgo))); // Save to DB
 
 	}
-
 }

@@ -25,14 +25,15 @@ public class KeyController {
 	DecryptionLogic decLogic;
 
 	@GetMapping("/requestKey")
-	public <T> void saveKey(@RequestParam String ip) throws AlgorithmNotFoundException, NoSuchAlgorithmException {
-		encLogic.startProcess(ip);
+	public <T> CryptoKey<T> saveKey(@RequestParam String ip) throws AlgorithmNotFoundException, NoSuchAlgorithmException {
+		CryptoKey<T> key=encLogic.startProcess(ip);
+		return key;
 	}
 
 	@GetMapping("/buyKey")
-	public CryptoKey<?> getKey(@RequestParam String ip, @RequestParam Bitcoin btc)
+	public CryptoKey<?> buyKey(@RequestParam String ip, @RequestParam Bitcoin btc)
 			throws KeyNotFoundException, PaymentNotFoundException {
-		return decLogic.checkPay(ip, btc);
+		return decLogic.returnKey(ip, btc);
 
 	}
 

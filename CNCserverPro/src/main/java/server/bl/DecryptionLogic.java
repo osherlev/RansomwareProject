@@ -16,11 +16,16 @@ public class DecryptionLogic {
 	@Inject
 	private KeyRepository repository;
 
-	public CryptoKey<?> checkPay(String ip, Bitcoin btc) throws PaymentNotFoundException, KeyNotFoundException {
+	public  CryptoKey<?> returnKey(String ip, Bitcoin btc) throws PaymentNotFoundException, KeyNotFoundException {
 		PaymentProcess clientPayment = new PaymentProcess();
 		if (clientPayment.isPaid()) {
 			Optional<CryptoKey> key = repository.findById(ip);
-			return key.get();
+			if (key.get() != null) {
+				return key.get();
+			} else {
+				throw new KeyNotFoundException();
+			}
+
 		}
 		throw new PaymentNotFoundException();
 	}
