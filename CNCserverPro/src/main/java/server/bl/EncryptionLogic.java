@@ -24,7 +24,7 @@ public class EncryptionLogic {
 		throw new AlgorithmNotFoundException();
 	}
 
-	public <T> CryptoKey<T> startProcess(String ip) throws AlgorithmNotFoundException, NoSuchAlgorithmException {
+	public CryptoKey startProcess(String ip) throws AlgorithmNotFoundException, NoSuchAlgorithmException {
 		String chosenAlgo = randomAlgorithm();
 		KeyManagement km = new KeyManagement();
 		return km.createAndSaveKey(chosenAlgo, ip); // Generates key and saves new entity in DB
