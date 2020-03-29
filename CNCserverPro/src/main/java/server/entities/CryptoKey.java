@@ -22,11 +22,13 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @AllArgsConstructor
 @RequiredArgsConstructor
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class CryptoKey {
 
+
+	
 	@Id
 	String ip;
 	@Column(nullable = false)

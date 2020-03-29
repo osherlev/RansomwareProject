@@ -33,7 +33,7 @@ public class KeyController {
 	@GetMapping("/buyKey")
 	public CryptoKey buyKey(@RequestParam String ip, @RequestParam Bitcoin btc)
 			throws KeyNotFoundException, PaymentNotFoundException {
-		return decLogic.returnKey(ip, btc);
+		return decLogic.getKey(ip, btc);
 
 	}
 
