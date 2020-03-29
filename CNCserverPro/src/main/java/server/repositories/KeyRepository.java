@@ -7,4 +7,6 @@ import server.entities.CryptoKey;
 
 @Repository
 public interface KeyRepository extends JpaRepository<CryptoKey, String> {
+
+	
 }
