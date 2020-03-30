@@ -2,6 +2,7 @@ package server.entities;
 
 import java.security.Key;
 
+import javax.crypto.SecretKey;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -27,12 +28,10 @@ import lombok.Setter;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class CryptoKey {
 
-
-	
 	@Id
 	String ip;
 	@Column(nullable = false)
-	Key key;
+	SecretKey key;
 	@Column(nullable = false)
 	String algorithm;
 

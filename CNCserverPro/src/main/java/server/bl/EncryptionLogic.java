@@ -18,7 +18,7 @@ public class EncryptionLogic {
 		try {
 			int random = rand.nextInt(algorithmsArr.length);
 			return algorithmsArr[random];
-		} catch (NullPointerException e) {
+		} catch (RuntimeException e) {
 			e.printStackTrace();
 		}
 		throw new AlgorithmNotFoundException();

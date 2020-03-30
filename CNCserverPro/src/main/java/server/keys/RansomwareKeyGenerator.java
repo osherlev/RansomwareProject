@@ -4,11 +4,12 @@ import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 
 import server.exceptions.AlgorithmNotFoundException;
 
 public class RansomwareKeyGenerator {
-	public Key generateKey(String chosenAlgorithm) throws AlgorithmNotFoundException {
+	public SecretKey generateKey(String chosenAlgorithm) throws AlgorithmNotFoundException {
 
 		// Creating a KeyGenerator object
 		KeyGenerator keyGen = null;

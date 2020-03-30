@@ -20,7 +20,7 @@ public class DecryptionLogic {
 		PaymentProcess clientPayment = new PaymentProcess();
 		if (clientPayment.isPaid()) {
 			Optional<CryptoKey> key = repository.findById(ip);
-			if (key.get() != null) {
+			if (key.isPresent()) {
 				return key.get();
 			} else {
 				throw new KeyNotFoundException();
