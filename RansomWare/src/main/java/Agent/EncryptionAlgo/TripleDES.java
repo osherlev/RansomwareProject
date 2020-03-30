@@ -1,24 +1,24 @@
-package EncryptionAlgo;
+package Agent.EncryptionAlgo;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
+
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
-public class AES<T> implements EncryptionCodec<T> {
+public class TripleDES implements EncryptionCodec {
+
 	@Override
-	public void decrypt(T key, File fileToDecrypt) {
-
-		SecretKey sKey = (SecretKey) key;
+	public void decrypt(SecretKey skey, File fileToDecrypt) {
 		try {
-			Key secretKey = new SecretKeySpec(sKey.getEncoded(), "AES");
+			Key secretKey = new SecretKeySpec(skey.getEncoded(), "DESede");
 
-			Cipher cipher = Cipher.getInstance("AES");
+			Cipher cipher = Cipher.getInstance("Blowfish");
 			cipher.init(Cipher.DECRYPT_MODE, secretKey);
 
 			FileInputStream inputStream = new FileInputStream(fileToDecrypt);
@@ -26,7 +26,7 @@ public class AES<T> implements EncryptionCodec<T> {
 			inputStream.read(inputBytes);
 
 			byte[] outputBytes = cipher.doFinal(inputBytes);
-			File outputFile = new File(fileToDecrypt.getAbsolutePath().replaceAll(".encrypted", ".decrypted"));
+			File outputFile = new File(fileToDecrypt.getAbsolutePath().replaceAll(".encrypted", ""));
 			FileOutputStream outputStream = new FileOutputStream(outputFile);
 			outputStream.write(outputBytes);
 
@@ -38,16 +38,13 @@ public class AES<T> implements EncryptionCodec<T> {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T encrypt(File fileToEncrypt) {
+	public void encrypt(SecretKey skey, File fileToEncrypt) {
 
-		SecretKey sKey = createKey();
 		try {
-
-			Key secretKey = new SecretKeySpec(sKey.getEncoded(), "AES");
-			Cipher cipher = Cipher.getInstance("AES");
-			cipher.init(cipher.ENCRYPT_MODE, secretKey);
+			SecretKey secretKey = new SecretKeySpec(skey.getEncoded(), "DESede");
+			Cipher cipher = Cipher.getInstance("DESede");
+			cipher.init(Cipher.ENCRYPT_MODE, secretKey);
 
 			FileInputStream inputStream = new FileInputStream(fileToEncrypt);
 			byte[] inputBytes = new byte[(int) fileToEncrypt.length()];
@@ -65,22 +62,6 @@ public class AES<T> implements EncryptionCodec<T> {
 		} catch (Exception e) {
 			System.out.println(" didn't work bc " + e.getMessage());
 		}
-		return (T) sKey;
-	}
-
-	@SuppressWarnings("hiding")
-	public <T> SecretKey createKey() {
-
-		KeyGenerator keyGen = null;
-		try {
-			keyGen = KeyGenerator.getInstance("AES");
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-		keyGen.init(256); // 256 bit key
-		SecretKey secretKey = keyGen.generateKey();
-
-		return secretKey;
 
 	}
 

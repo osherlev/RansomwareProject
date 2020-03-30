@@ -1,4 +1,4 @@
-package Payment;
+package Agent.Payment;
 
 import javax.persistence.Entity;
 

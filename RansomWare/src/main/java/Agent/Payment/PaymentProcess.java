@@ -1,4 +1,4 @@
-package Payment;
+package Agent.Payment;
 
 public class PaymentProcess {
 

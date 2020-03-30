@@ -1,9 +1,9 @@
-package Attack;
+package Agent.Attack;
 
 import java.io.File;
 import java.util.Collection;
 
-import SpreadR.SpreadRansom;
+import Agent.SpreadR.SpreadRansom;
 
 public class AttackVector implements SpreadRansom {
 
@@ -32,7 +32,7 @@ public class AttackVector implements SpreadRansom {
 			for (File file : fList) {
 				if (file.isDirectory()) {
 					try {
-						if (isVisitedFolder(file, dirs) == false) {
+						if (!(isVisitedFolder(file, dirs))) {
 							dirs.add(file);
 						}
 					} catch (NullPointerException e) {
@@ -43,7 +43,7 @@ public class AttackVector implements SpreadRansom {
 					//
 				} else if (file.isFile()) {
 					System.out.println("\t" + file.getName());
-					// encryption
+					// encryption instead of pronting names of files and directories
 
 				}
 			}

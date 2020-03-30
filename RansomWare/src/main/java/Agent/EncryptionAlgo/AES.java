@@ -1,25 +1,23 @@
-package EncryptionAlgo;
+package Agent.EncryptionAlgo;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
-
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
-public class TripleDES<T> implements EncryptionCodec<T> {
+public class AES implements EncryptionCodec {
 	@Override
-	public void decrypt(T key, File fileToDecrypt) {
+	public void decrypt(SecretKey skey, File fileToDecrypt) {
 
-		SecretKey sKey = (SecretKey) key;
 		try {
-			Key secretKey = new SecretKeySpec(sKey.getEncoded(), "DESede");
+			Key secretKey = new SecretKeySpec(skey.getEncoded(), "AES");
 
-			Cipher cipher = Cipher.getInstance("DESede");
+			Cipher cipher = Cipher.getInstance("AES");
 			cipher.init(Cipher.DECRYPT_MODE, secretKey);
 
 			FileInputStream inputStream = new FileInputStream(fileToDecrypt);
@@ -27,7 +25,7 @@ public class TripleDES<T> implements EncryptionCodec<T> {
 			inputStream.read(inputBytes);
 
 			byte[] outputBytes = cipher.doFinal(inputBytes);
-			File outputFile = new File(fileToDecrypt.getAbsolutePath().replaceAll(".encrypted", ".decrypted"));
+			File outputFile = new File(fileToDecrypt.getAbsolutePath().replaceAll(".encrypted", ""));
 			FileOutputStream outputStream = new FileOutputStream(outputFile);
 			outputStream.write(outputBytes);
 
@@ -39,15 +37,12 @@ public class TripleDES<T> implements EncryptionCodec<T> {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T encrypt(File fileToEncrypt) {
+	public void encrypt(SecretKey skey, File fileToEncrypt) {
 
-		SecretKey sKey = createKey();
 		try {
-
-			Key secretKey = new SecretKeySpec(sKey.getEncoded(), "DESede");
-			Cipher cipher = Cipher.getInstance("DESede");
+			SecretKey secretKey = new SecretKeySpec(skey.getEncoded(), "AES");
+			Cipher cipher = Cipher.getInstance("AES");
 			cipher.init(Cipher.ENCRYPT_MODE, secretKey);
 
 			FileInputStream inputStream = new FileInputStream(fileToEncrypt);
@@ -66,22 +61,7 @@ public class TripleDES<T> implements EncryptionCodec<T> {
 		} catch (Exception e) {
 			System.out.println(" didn't work bc " + e.getMessage());
 		}
-		return (T) sKey;
-	}
-
-	@Override
-	public <T> SecretKey createKey() {
-
-		KeyGenerator keyGen = null;
-		try {
-			keyGen = KeyGenerator.getInstance("DESede");
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-		keyGen.init(256); // 256 bit key
-		SecretKey secretKey = keyGen.generateKey();
-
-		return secretKey;
 
 	}
+
 }
