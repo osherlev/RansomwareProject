@@ -26,10 +26,10 @@ public class RansomwareKeyGenerator {
 			return keyGen.generateKey();
 			
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+
+			throw new AlgorithmNotFoundException();
 		}
 
-		throw new AlgorithmNotFoundException();
 
 	}
 

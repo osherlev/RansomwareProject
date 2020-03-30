@@ -19,9 +19,9 @@ public class EncryptionLogic {
 			int random = rand.nextInt(algorithmsArr.length);
 			return algorithmsArr[random];
 		} catch (RuntimeException e) {
-			e.printStackTrace();
+			throw new AlgorithmNotFoundException();
 		}
-		throw new AlgorithmNotFoundException();
+
 	}
 
 	public CryptoKey startProcess(String ip) throws AlgorithmNotFoundException, NoSuchAlgorithmException {

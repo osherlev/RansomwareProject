@@ -11,10 +11,12 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
+import server.exceptions.CryptoException;
+
 public class Blowfish implements EncryptionCodec{
 	
 	@Override
-	public void decrypt(SecretKey skey, File fileToDecrypt) {
+	public void decrypt(SecretKey skey, File fileToDecrypt) throws CryptoException {
 		try {
 			Key secretKey = new SecretKeySpec(skey.getEncoded(), "Blowfish");
 
@@ -34,12 +36,12 @@ public class Blowfish implements EncryptionCodec{
 			outputStream.close();
 
 		} catch (Exception e) {
-			System.out.println(" SecretKeySpec not working bc " + e.getMessage());
+			throw new CryptoException();
 		}
 	}
 
 	@Override
-	public void encrypt(SecretKey skey, File fileToEncrypt) {
+	public void encrypt(SecretKey skey, File fileToEncrypt) throws CryptoException {
 
 		try {
 			SecretKey secretKey = new SecretKeySpec(skey.getEncoded(), "Blowfish");
@@ -60,7 +62,7 @@ public class Blowfish implements EncryptionCodec{
 			outputStream.close();
 
 		} catch (Exception e) {
-			System.out.println(" didn't work bc " + e.getMessage());
+			throw new CryptoException();
 		}
 
 	}
