@@ -1,6 +1,7 @@
 package server.controllers;
 
 import java.security.NoSuchAlgorithmException;
+import javax.servlet.http.HttpServletRequest;
 
 import javax.inject.Inject;
 
@@ -23,17 +24,17 @@ public class KeyController {
 	EncryptionLogic encLogic;
 	@Inject
 	DecryptionLogic decLogic;
+	private HttpServletRequest request;
 
 	@GetMapping("/requestKey")
-	public CryptoKey saveKey(@RequestParam String ip) throws AlgorithmNotFoundException, NoSuchAlgorithmException {
-		return encLogic.startProcess(ip);
+	public CryptoKey saveKey() throws AlgorithmNotFoundException, NoSuchAlgorithmException {
+		return encLogic.startProcess(request.getRemoteAddr());
 
 	}
 
 	@GetMapping("/buyKey")
-	public CryptoKey buyKey(@RequestParam String ip, @RequestParam Bitcoin btc)
-			throws KeyNotFoundException, PaymentNotFoundException {
-		return decLogic.getKey(ip, btc);
+	public CryptoKey buyKey(@RequestParam Bitcoin btc) throws KeyNotFoundException, PaymentNotFoundException {
+		return decLogic.getKey(request.getRemoteAddr(), btc);
 
 	}
 

@@ -25,12 +25,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @RequiredArgsConstructor
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+
 public class CryptoKey {
 
-	public CryptoKey(String ip2, Key generateKey, String encalgo) {
-		// TODO Auto-generated constructor stub
-	}
+
 	@Id
 	String ip;
 	@Column(nullable = false)

