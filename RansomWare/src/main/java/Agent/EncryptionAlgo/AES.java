@@ -57,10 +57,8 @@ public class AES implements EncryptionCodec {
 
 			FileOutputStream outputStream = new FileOutputStream(outputFile);
 			outputStream.write(outputBytes);
-
 			inputStream.close();
 			outputStream.close();
-
 		} catch (Exception e) {
 
 		}
