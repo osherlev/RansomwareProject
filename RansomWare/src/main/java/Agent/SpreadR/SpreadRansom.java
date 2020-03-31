@@ -1,5 +1,5 @@
 package Agent.SpreadR;
 
 public interface SpreadRansom {
- public void spread();
+	public void spread();
 }

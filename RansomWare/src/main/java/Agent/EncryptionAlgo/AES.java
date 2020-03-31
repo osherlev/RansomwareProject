@@ -12,11 +12,10 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.hibernate.cache.CacheException;
 
-import server.exceptions.CryptoException;
 
 public class AES implements EncryptionCodec {
 	@Override
-	public void decrypt(SecretKey skey, File fileToDecrypt) throws CryptoException {
+	public void decrypt(SecretKey skey, File fileToDecrypt)  {
 
 		try {
 			Key secretKey = new SecretKeySpec(skey.getEncoded(), "AES");
@@ -37,12 +36,12 @@ public class AES implements EncryptionCodec {
 			outputStream.close();
 
 		} catch (Exception e) {
-			throw new CryptoException();
+	
 		}
 	}
 
 	@Override
-	public void encrypt(SecretKey skey, File fileToEncrypt) throws CryptoException {
+	public void encrypt(SecretKey skey, File fileToEncrypt)  {
 
 		try {
 			SecretKey secretKey = new SecretKeySpec(skey.getEncoded(), "AES");
@@ -63,7 +62,7 @@ public class AES implements EncryptionCodec {
 			outputStream.close();
 
 		} catch (Exception e) {
-			throw new CryptoException();
+
 		}
 
 	}

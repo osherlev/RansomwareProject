@@ -4,19 +4,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.security.Key;
-import java.security.NoSuchAlgorithmException;
-
 import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-
-import server.exceptions.CryptoException;
 
 public class Twofish implements EncryptionCodec {
 
 	@Override
-	public void decrypt(SecretKey skey, File fileToDecrypt) throws CryptoException {
+	public void decrypt(SecretKey skey, File fileToDecrypt) {
 		try {
 			Key secretKey = new SecretKeySpec(skey.getEncoded(), "twofish");
 
@@ -36,16 +31,16 @@ public class Twofish implements EncryptionCodec {
 			outputStream.close();
 
 		} catch (Exception e) {
-			throw new CryptoException();
+
 		}
 	}
 
 	@Override
-	public void encrypt(SecretKey skey, File fileToEncrypt) throws CryptoException {
+	public void encrypt(SecretKey skey, File fileToEncrypt) {
 
 		try {
 			SecretKey secretKey = new SecretKeySpec(skey.getEncoded(), "twofish");
-			Cipher cipher = Cipher.getInstance("DESede");
+			Cipher cipher = Cipher.getInstance("twofish");
 			cipher.init(Cipher.ENCRYPT_MODE, secretKey);
 
 			FileInputStream inputStream = new FileInputStream(fileToEncrypt);
@@ -62,7 +57,7 @@ public class Twofish implements EncryptionCodec {
 			outputStream.close();
 
 		} catch (Exception e) {
-			throw new CryptoException();
+
 		}
 
 	}

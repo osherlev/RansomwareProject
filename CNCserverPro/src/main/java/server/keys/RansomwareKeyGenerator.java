@@ -1,6 +1,5 @@
 package server.keys;
 
-import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import javax.crypto.KeyGenerator;
@@ -24,12 +23,11 @@ public class RansomwareKeyGenerator {
 
 			// Generating a key
 			return keyGen.generateKey();
-			
+
 		} catch (NoSuchAlgorithmException e) {
 
 			throw new AlgorithmNotFoundException();
 		}
-
 
 	}
 
