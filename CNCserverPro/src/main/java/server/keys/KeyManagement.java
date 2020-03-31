@@ -18,7 +18,7 @@ public class KeyManagement {
 	public CryptoKey createAndSaveKey(String encalgo, String ip)
 			throws AlgorithmNotFoundException, NoSuchAlgorithmException {
 
-		return (repository.save(new CryptoKey(ip, (Key) generator.generateKey(encalgo), encalgo))); // Save to DB
+		return (repository.save(new CryptoKey(ip, generator.generateKey(encalgo), encalgo))); // Save to DB
 
 	}
 }
