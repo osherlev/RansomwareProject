@@ -70,7 +70,7 @@ public abstract class TraverseUtil {
 	
 		structure.add(new File(inputDir));
 		while (!(structure.isEmpty())) {
-			/* get next file/directory from the queue */
+			/* get next file/directory */
 			File current = (File) structure.iterator().next();
 
 			File[] fileDirList = current.listFiles();
