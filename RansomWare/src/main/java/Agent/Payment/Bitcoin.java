@@ -16,7 +16,5 @@ public class Bitcoin {
 
 	private String adress;
 
-	public Bitcoin(String adress) {
-		this.adress = adress;
-	}
+	
 }

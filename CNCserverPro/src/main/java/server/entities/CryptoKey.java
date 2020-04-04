@@ -1,13 +1,9 @@
 package server.entities;
 
-import java.security.Key;
-
 import javax.crypto.SecretKey;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -24,11 +20,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-@RequiredArgsConstructor
+
 
 public class CryptoKey {
-
-
+	
 	@Id
 	String ip;
 	@Column(nullable = false)

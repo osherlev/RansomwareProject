@@ -21,9 +21,9 @@ import server.exceptions.PaymentNotFoundException;
 public class KeyController {
 
 	@Inject
-	EncryptionLogic encLogic;
+	private EncryptionLogic encLogic;
 	@Inject
-	DecryptionLogic decLogic;
+	private DecryptionLogic decLogic;
 	private HttpServletRequest request;
 
 	@GetMapping("/requestKey")
