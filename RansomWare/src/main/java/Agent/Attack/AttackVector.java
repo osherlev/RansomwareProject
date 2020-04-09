@@ -23,10 +23,10 @@ public void attack(String inputDir, Collection<File> dirs)
 
 		Collection<File> visitedFolders = Collections.emptySet();
 
-		/*for (char i = 'A'; i <= 'H'; i++) {
+		for (char i = 'A'; i <= 'H'; i++) {
 			attack(i + ":\\", visitedFolders);
 			
-		}*/
+		}
 
 	}
 
