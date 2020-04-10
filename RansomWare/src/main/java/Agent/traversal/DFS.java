@@ -1,22 +1,25 @@
 package Agent.traversal;
 
 import java.io.File;
-import java.util.Collection;
 import java.util.Stack;
-public class DFS extends TraverseUtil {
+
+public class DFS extends Traverse {
+	private Stack<File> _stack;
 
 	@Override
-	public void traverseAndEncrypt(String inputDir, Collection<File> dirs) {
-		/* make a stack to store files and directories */
-		Stack<File> stack = new Stack<File>();
+	public void addToStruct(File file) {
+		_stack.push(file);
+	}
 
-		while (!stack.isEmpty()) {
-			if (!(isVisitedFolder(new File(inputDir), dirs))) {
-				stack.push(new File(inputDir));
-			}
-			sharedCode(inputDir, dirs, stack);
+	@Override
+	public boolean checkEmptyStruct() {
 
-		}
+		return _stack.isEmpty();
+	}
 
+	@Override
+	public File removeFromStruct() {
+
+		return _stack.pop();
 	}
 }
