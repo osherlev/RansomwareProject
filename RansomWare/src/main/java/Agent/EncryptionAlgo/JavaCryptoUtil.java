@@ -22,7 +22,7 @@ public class JavaCryptoUtil {
 	// comment2334
 	public void doCrypto(SecretKey skey, File inputFile, int cipherMode, File outputFile, String algorithm)
 			throws CryptoException {
-
+ 
 		try {
 			SecretKey secretKey = new SecretKeySpec(skey.getEncoded(), algorithm);
 			Cipher cipher = Cipher.getInstance(algorithm);

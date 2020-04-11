@@ -18,6 +18,7 @@ public class Client {
 	@Value("${server.host}")
 	private String host;
 
+	//commit
 	public void start() throws Exception {
 		try {
 			while (true) {
