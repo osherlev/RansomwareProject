@@ -19,7 +19,7 @@ import Agent.exceptions.CryptoException;
 public class JavaCryptoUtil {
 	private RansomFiles changeFile;
 
-	// comment2
+	// comment23
 	public void doCrypto(SecretKey skey, File inputFile, int cipherMode, File outputFile, String algorithm)
 			throws CryptoException {
 
