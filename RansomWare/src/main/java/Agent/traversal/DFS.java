@@ -7,18 +7,20 @@ public class DFS<T> extends Traverse {
 	private Stack<T> _stack;
 
 	@Override
-	public void add(File file) {
-		_stack.push((T) file);
+	public <T> void add(T file) {
+		_stack.push(file);
+		
+	}
+
+	@Override
+	public <T> T remove() {
+		return (T) _stack.pop();
 	}
 
 	@Override
 	public boolean isEmpty() {
-
 		return _stack.isEmpty();
 	}
 
-	@Override
-	public File remove() {
-		return (File) _stack.pop();
-	}
+
 }

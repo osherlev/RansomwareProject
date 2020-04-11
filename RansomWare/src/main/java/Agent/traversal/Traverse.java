@@ -6,20 +6,23 @@ import Agent.EncryptionAlgo.JavaCryptoUtil;
 import Agent.entites.CryptoKey;
 import Agent.exceptions.CryptoException;
 
-public abstract class Traverse { 
+public abstract class Traverse {
+
+	public boolean compareFolders(File file1, File file2) {
+		return (file1.getName() == file2.getName());
+	}
 
 	// Check if specific directory is already found in the folder tree
-	public boolean isVisitedFolder(File file, Collection<File> folderTree) {
-		if (folderTree == null)
+	private boolean isVisitedFolder(File file, Collection<File> folderTree) {
+		if (folderTree == null) {
 			return false;
-		else {
-			for (File directory : folderTree) {
+		}
 
-				if (directory.getName() == file.getName()) {
-					return true;
-				}
-			}
-			return false;
+		else {
+			boolean isExist = false;
+			String tocheck = file.getName();
+			isExist = folderTree.stream().anyMatch(t -> t.getName() == tocheck);
+			return isExist;
 		}
 
 	}
@@ -62,9 +65,9 @@ public abstract class Traverse {
 		}
 	}
 
-	public abstract void add(File file);
+	public abstract <T> void add(T file);
 
-	public abstract File remove();
+	public abstract <T> T remove();
 
 	public abstract boolean isEmpty();
 

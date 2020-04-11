@@ -1,5 +1,5 @@
 package Agent.EncryptionAlgo;
 
-public class AES  {
+public class Twofish {
 
 }

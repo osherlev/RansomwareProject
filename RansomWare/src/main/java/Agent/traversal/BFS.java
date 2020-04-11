@@ -7,20 +7,21 @@ public class BFS<T> extends Traverse {
 	private Queue<T> _queue;
 
 	@Override
-	public void add(File file) {
-		_queue.add((T) file);
+	public <T> void add(T file) {
+	_queue.add((T) file);
+		
 	}
 
 	@Override
-	public File remove() {
-
-		return (File) _queue.poll();
+	public <T> T remove() {
+		return (T) _queue.poll();
 	}
 
 	@Override
 	public boolean isEmpty() {
-
 		return _queue.isEmpty();
 	}
+
+
 
 }
