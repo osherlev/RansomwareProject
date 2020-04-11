@@ -1,6 +1,4 @@
-package Agent.Payment;
-
-import javax.persistence.Entity;
+package Agent.entites;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +7,6 @@ import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @Getter
 @Setter
 public class Bitcoin {

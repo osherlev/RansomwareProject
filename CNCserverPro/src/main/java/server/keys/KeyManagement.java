@@ -1,6 +1,5 @@
 package server.keys;
 
-import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 
 import javax.inject.Inject;

