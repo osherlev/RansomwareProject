@@ -3,12 +3,12 @@ package Agent.traversal;
 import java.io.File;
 import java.util.Stack;
 
-public class DFS extends Traverse {
-	private Stack<File> _stack;
+public class DFS<T> extends Traverse {
+	private Stack<T> _stack;
 
 	@Override
 	public void add(File file) {
-		_stack.push(file);
+		_stack.push((T) file);
 	}
 
 	@Override
@@ -19,6 +19,6 @@ public class DFS extends Traverse {
 
 	@Override
 	public File remove() {
-		return _stack.pop();
+		return (File) _stack.pop();
 	}
 }

