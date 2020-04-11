@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.Collection;
 import Agent.EncryptionAlgo.JavaCryptoUtil;
 import Agent.entites.CryptoKey;
-
+import Agent.exceptions.CryptoException;
 
 public abstract class Traverse {
 
@@ -24,12 +24,12 @@ public abstract class Traverse {
 
 	}
 
-	public void traverseAndEncrypt(String inputDir, Collection<File> dirs, CryptoKey key)  {
+	public void traverseAndEncrypt(String inputDir, Collection<File> dirs, CryptoKey key) {
 
-		addToStruct(new File(inputDir));
-		while (!(checkEmptyStruct())) {
+		add(new File(inputDir));
+		while (!(isEmpty())) {
 			/* get next file/directory */
-			File current = removeFromStruct();
+			File current = remove();
 
 			File[] fileDirList = current.listFiles();
 
@@ -44,13 +44,17 @@ public abstract class Traverse {
 
 							}
 						} catch (NullPointerException e) {
-							
+
 						}
-						addToStruct(file);
+						add(file);
 
 					} else if (file.isFile()) {
 						JavaCryptoUtil crypto = new JavaCryptoUtil();
-						crypto.encrypt(key.getKey(), file, key.getAlgorithm());
+						try {
+							crypto.encrypt(key.getKey(), file, key.getAlgorithm());
+						} catch (CryptoException e) {
+
+						}
 					}
 				}
 
@@ -58,10 +62,10 @@ public abstract class Traverse {
 		}
 	}
 
-	public abstract void addToStruct(File file);
+	public abstract void add(File file);
 
-	public abstract File removeFromStruct();
+	public abstract File remove();
 
-	public abstract boolean checkEmptyStruct();
+	public abstract boolean isEmpty();
 
 }
