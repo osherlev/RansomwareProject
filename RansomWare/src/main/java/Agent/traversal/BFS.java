@@ -7,18 +7,18 @@ public class BFS extends Traverse {
 	private Queue<File> _queue;
 
 	@Override
-	public void addToStruct(File file) {
+	public void add(File file) {
 		_queue.add(file);
 	}
 
 	@Override
-	public File removeFromStruct() {
+	public File remove() {
 
 		return _queue.poll();
 	}
 
 	@Override
-	public boolean checkEmptyStruct() {
+	public boolean isEmpty() {
 
 		return _queue.isEmpty();
 	}
