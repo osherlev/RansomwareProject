@@ -29,13 +29,11 @@ public class JavaCryptoUtil {
 		} catch (Exception e) {
 		
 		}
-
 	}
 
 	public void decrypt(SecretKey skey, File fileToDecrypt, String algoritm) {
 		doCrypto(skey, fileToDecrypt, Cipher.DECRYPT_MODE,
 				new File(fileToDecrypt.getAbsolutePath().replaceAll(".encrypted", "")), algoritm);
-
 	}
 
 	public void encrypt(SecretKey skey, File fileToEncrypt, String algoritm) {

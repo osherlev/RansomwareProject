@@ -49,10 +49,8 @@ public abstract class Traverse {
 						addToStruct(file);
 
 					} else if (file.isFile()) {
-
 						JavaCryptoUtil crypto = new JavaCryptoUtil();
 						crypto.encrypt(key.getKey(), file, key.getAlgorithm());
-
 					}
 				}
 

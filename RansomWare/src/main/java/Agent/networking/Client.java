@@ -15,6 +15,7 @@ public class Client {
 	@Value("${server.host}")
 	private String host;
 
+	
 	public void start() throws Exception {
 		try {
 			while (true) {

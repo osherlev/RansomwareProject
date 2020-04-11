@@ -22,6 +22,10 @@ import lombok.Setter;
 
 public class CryptoKey implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	String ip;
 	@Column(nullable = false)

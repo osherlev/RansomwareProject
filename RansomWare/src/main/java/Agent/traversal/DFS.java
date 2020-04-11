@@ -19,7 +19,6 @@ public class DFS extends Traverse {
 
 	@Override
 	public File removeFromStruct() {
-
 		return _stack.pop();
 	}
 }

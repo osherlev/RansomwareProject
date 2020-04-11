@@ -16,7 +16,7 @@ public class Server {
 	private String host;
 
 	public synchronized void connectClients() throws IOException {
-		System.out.println(host + "\n" + port);
+	
 
 		ServerSocket server = new ServerSocket(port);
 		
