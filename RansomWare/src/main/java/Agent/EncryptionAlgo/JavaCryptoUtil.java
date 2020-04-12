@@ -58,13 +58,14 @@ public class JavaCryptoUtil {
 
 	public void decrypt(SecretKey skey, File fileToDecrypt, String algoritm) throws CryptoException {
 
-		doCrypto(skey, fileToDecrypt, Cipher.DECRYPT_MODE, new File(fileToDecrypt.getAbsolutePath() + decfile), algoritm);
+		doCrypto(skey, fileToDecrypt, Cipher.DECRYPT_MODE,
+				new File(fileToDecrypt.getAbsolutePath().replaceAll(encfile, decfile)), algoritm);
 	}
 
 	public void encrypt(SecretKey skey, File fileToEncrypt, String algoritm) throws CryptoException {
 
-		doCrypto(skey, fileToEncrypt, Cipher.ENCRYPT_MODE, new File(fileToEncrypt.getAbsolutePath() + encfile), algoritm);
+		doCrypto(skey, fileToEncrypt, Cipher.ENCRYPT_MODE, new File(fileToEncrypt.getAbsolutePath() + encfile),
+				algoritm);
 	}
-
 
 }

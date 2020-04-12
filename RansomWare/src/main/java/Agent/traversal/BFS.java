@@ -1,10 +1,9 @@
 package Agent.traversal;
 
-import java.io.File;
 import java.util.Queue;
 
-public class BFS<T> extends Traverse {
-	private Queue<T> _queue;
+public class BFS  implements Traverse  {
+	private Queue _queue; 
 
 	@Override
 	public <T> void add(T file) {
