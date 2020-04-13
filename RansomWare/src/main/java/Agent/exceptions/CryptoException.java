@@ -8,7 +8,7 @@ public class CryptoException extends RansomwareException {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	public CryptoException()
 
@@ -19,5 +19,8 @@ public class CryptoException extends RansomwareException {
 
 	{
 		super(msg);
+	}
+	public CryptoException(String string, Throwable cause) {
+		super(string,cause);
 	}
 }
