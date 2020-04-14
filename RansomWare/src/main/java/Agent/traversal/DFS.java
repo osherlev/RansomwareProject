@@ -2,16 +2,16 @@ package Agent.traversal;
 
 import java.util.Stack;
 
-public class DFS implements Traverse {
+public class DFS<T> implements Traverse<T> {
 	private Stack _stack;
 
 	@Override
-	public <T> void add(T file) {
-		_stack.push(file);
-		
+	public void add(T obj) {
+		_stack.add(obj);
 	}
+
 	@Override
-	public <T> T remove() {
+	public T remove() {
 		return (T) _stack.pop();
 	}
 
@@ -19,6 +19,8 @@ public class DFS implements Traverse {
 	public boolean isEmpty() {
 		return _stack.isEmpty();
 	}
+
+
 
 
 }

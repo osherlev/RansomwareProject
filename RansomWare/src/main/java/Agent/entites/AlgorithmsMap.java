@@ -1,4 +1,4 @@
-package Agent.Utils;
+package Agent.entites;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,8 +9,9 @@ import Agent.EncryptionAlgo.CryptoAlgorithm;
 import Agent.EncryptionAlgo.DESede;
 import Agent.EncryptionAlgo.Twofish;
 
-public class AlgorithmsMapUtil {
+public class AlgorithmsMap {
 	private static Map<String, CryptoAlgorithm> algorithmMap;
+
 
 	public static HashMap<String, CryptoAlgorithm> getMap() {
 

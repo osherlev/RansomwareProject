@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import server.bl.DecryptionLogic;
@@ -27,13 +28,13 @@ public class KeyController {
 	private HttpServletRequest request;
 
 	@GetMapping("/requestKey")
-	public CryptoKey saveKey() throws AlgorithmNotFoundException, NoSuchAlgorithmException {
+	public @ResponseBody CryptoKey saveKey() throws AlgorithmNotFoundException, NoSuchAlgorithmException {
 		return encLogic.startProcess(request.getRemoteAddr());
 
 	}
 
 	@GetMapping("/buyKey")
-	public CryptoKey buyKey(@RequestParam Bitcoin btc) throws KeyNotFoundException, PaymentNotFoundException {
+	public @ResponseBody CryptoKey buyKey(@RequestParam Bitcoin btc) throws KeyNotFoundException, PaymentNotFoundException {
 		return decLogic.getKey(request.getRemoteAddr(), btc);
 
 	}

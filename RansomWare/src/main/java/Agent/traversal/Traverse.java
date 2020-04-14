@@ -1,11 +1,13 @@
 package Agent.traversal;
 
-public interface  Traverse {
+public interface  Traverse<T> {
 	
-	public abstract <T> void add(T file);
+	public abstract void add(T obj);
 
-	public abstract <T> T remove();
+	public abstract T remove();
 
 	public abstract boolean isEmpty();
+
+
 
 }
