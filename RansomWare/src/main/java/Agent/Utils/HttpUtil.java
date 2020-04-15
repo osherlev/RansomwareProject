@@ -24,8 +24,8 @@ public class HttpUtil {
 
 	}
 
-	private static boolean isClientFault(int statusCode) {
-		return (statusCode >= HttpStatus.BAD_REQUEST.value() && statusCode <HttpStatus.INTERNAL_SERVER_ERROR.value());
+	private static boolean isServerFault(int statusCode) {
+		return (statusCode >= HttpStatus.INTERNAL_SERVER_ERROR.value());
 	}
 
 	public static Object get(String urlToRead) throws RansomwareException {
@@ -57,10 +57,10 @@ public class HttpUtil {
 			} catch (JSONException e) {
 				throw new JsonException("JSON cant find any CryptoKey", e.getCause());
 			}
-		} else if (isClientFault(httpCode)) {
-			throw new HttpResException("client error");
-		} else {
+		} else if (isServerFault(httpCode)) {
 			throw new HttpResException("server fucked up");
+		} else {
+			throw new HttpResException("you fucked it up");
 		}
 	}
 }

