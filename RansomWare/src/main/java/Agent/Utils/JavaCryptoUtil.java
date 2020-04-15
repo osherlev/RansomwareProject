@@ -14,8 +14,6 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import com.github.raychatter.ExceptionHandler;
 
 import Agent.exceptions.AlgorithmNotFoundException;
@@ -28,20 +26,16 @@ import Agent.exceptions.RansomwareException;
 @ExceptionHandler
 public class JavaCryptoUtil {
 
-	private static String STATIC_ENCFILE;
-	private static String STATIC_DECFILE;
+	public static void encrypt(SecretKey skey, File fileToEncrypt, File outPutFile, String algoritm)
+			throws RansomwareException {
 
-	public static void encrypt(SecretKey skey, File fileToEncrypt, String algoritm) throws RansomwareException {
-		setEncName("");
-		doCrypto(skey, fileToEncrypt, Cipher.ENCRYPT_MODE, new File(fileToEncrypt.getAbsolutePath() + STATIC_ENCFILE),
-				algoritm);
+		doCrypto(skey, fileToEncrypt, Cipher.ENCRYPT_MODE, outPutFile, algoritm);
 	}
 
-	public static void decrypt(SecretKey skey, File fileToDecrypt, String algoritm) throws RansomwareException {
+	public static void decrypt(SecretKey skey, File fileToDecrypt, File outPutFile, String algoritm)
+			throws RansomwareException {
 
-		setDecName("");
-		doCrypto(skey, fileToDecrypt, Cipher.DECRYPT_MODE,
-				new File(fileToDecrypt.getAbsolutePath().replaceAll(STATIC_ENCFILE, STATIC_DECFILE)), algoritm);
+		doCrypto(skey, fileToDecrypt, Cipher.DECRYPT_MODE, outPutFile, algoritm);
 	}
 
 	private static void doCrypto(SecretKey skey, File inputFile, int cipherMode, File outputFile, String algorithm)
@@ -60,36 +54,21 @@ public class JavaCryptoUtil {
 			throw new KeyNotFoundException();
 		}
 
-		try (FileInputStream inputStream = new FileInputStream(inputFile);) {
+		try (FileInputStream inputStream = new FileInputStream(inputFile);
+				FileOutputStream outputStream = new FileOutputStream(outputFile);) {
 			byte[] inputBytes = new byte[(int) inputFile.length()];
 			inputStream.read(inputBytes);
 			byte[] outputBytes = null;
-
-			try {
-				outputBytes = cipher.doFinal(inputBytes);
-			} catch (IllegalBlockSizeException e) {
-				throw new CryptoException("illegal block size", e.getCause());
-			} catch (BadPaddingException e) {
-				throw new PaddingException("bad padding", e.getCause());
-			}
-
-			try (FileOutputStream outputStream = new FileOutputStream(outputFile);) {
-				outputStream.write(outputBytes);
-			}
+			outputBytes = cipher.doFinal(inputBytes);
+			outputStream.write(outputBytes);
 		} catch (IOException e) {
-			throw new InOutException("input stream problem", e.getCause());
+			throw new InOutException(" stream problem", e.getCause());
+		} catch (IllegalBlockSizeException e) {
+			throw new CryptoException("illegal block size", e.getCause());
+		} catch (BadPaddingException e) {
+			throw new PaddingException("bad padding", e.getCause());
 		}
 
-	}
-
-	@Value("${File.decrypted}")
-	private static void setDecName(String name) {
-		JavaCryptoUtil.STATIC_DECFILE = name;
-	}
-
-	@Value("${File.encrypted}")
-	private static void setEncName(String name) {
-		JavaCryptoUtil.STATIC_ENCFILE = name;
 	}
 
 }

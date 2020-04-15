@@ -1,9 +1,10 @@
 package Agent.traversal;
 
+import java.util.LinkedList;
 import java.util.Stack;
 
 public class DFS<T> implements Traverse<T> {
-	private Stack _stack;
+	private Stack _stack = new Stack();
 
 	@Override
 	public void add(T obj) {
@@ -19,8 +20,5 @@ public class DFS<T> implements Traverse<T> {
 	public boolean isEmpty() {
 		return _stack.isEmpty();
 	}
-
-
-
 
 }
