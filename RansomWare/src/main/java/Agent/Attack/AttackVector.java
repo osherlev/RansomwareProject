@@ -25,7 +25,7 @@ public class AttackVector {
 
 	}
 
-	public void decryptFileSystem(Cryptable cryptFunc) throws RansomwareException {
+	public void decryptFileSystem() throws RansomwareException {
 		try {
 			attack(keyService.buykey(), new DecryptFile());
 		} catch (RansomwareException e) {
