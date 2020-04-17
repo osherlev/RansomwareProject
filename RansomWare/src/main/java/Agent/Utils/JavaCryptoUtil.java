@@ -21,39 +21,26 @@ import Agent.exceptions.CryptoException;
 import Agent.exceptions.InOutException;
 import Agent.exceptions.KeyNotFoundException;
 import Agent.exceptions.PaddingException;
-import Agent.exceptions.RansomwareException;
 
 @ExceptionHandler
 public class JavaCryptoUtil {
 
-	public static void encrypt(SecretKey skey, File fileToEncrypt, File outPutFile, String algoritm)
-			throws RansomwareException {
+	public static void encrypt(SecretKey skey, File fileToEncrypt, File outPutFile, String algorithm)
+			throws AlgorithmNotFoundException, PaddingException, KeyNotFoundException, CryptoException, InOutException {
 
-		doCrypto(skey, fileToEncrypt, Cipher.ENCRYPT_MODE, outPutFile, algoritm);
+		doCrypto(skey, fileToEncrypt, Cipher.ENCRYPT_MODE, outPutFile, algorithm);
 	}
 
-	public static void decrypt(SecretKey skey, File fileToDecrypt, File outPutFile, String algoritm)
-			throws RansomwareException {
+	public static void decrypt(SecretKey skey, File fileToDecrypt, File outPutFile, String algorithm)
+			throws AlgorithmNotFoundException, PaddingException, KeyNotFoundException, CryptoException, InOutException {
 
-		doCrypto(skey, fileToDecrypt, Cipher.DECRYPT_MODE, outPutFile, algoritm);
+		doCrypto(skey, fileToDecrypt, Cipher.DECRYPT_MODE, outPutFile, algorithm);
 	}
 
 	private static void doCrypto(SecretKey skey, File inputFile, int cipherMode, File outputFile, String algorithm)
-			throws RansomwareException {
+			throws AlgorithmNotFoundException, PaddingException, KeyNotFoundException, CryptoException, InOutException {
 
-		SecretKey secretKey = new SecretKeySpec(skey.getEncoded(), skey.getAlgorithm());
-		Cipher cipher = null;
-		try {
-			cipher = Cipher.getInstance(algorithm);
-			cipher.init(cipherMode, secretKey);
-		} catch (NoSuchAlgorithmException e) {
-			throw new AlgorithmNotFoundException();
-		} catch (NoSuchPaddingException e) {
-			throw new PaddingException("no padding -> problem", e.getCause());
-		} catch (InvalidKeyException e) {
-			throw new KeyNotFoundException();
-		}
-
+		Cipher cipher = initCipher(skey, algorithm, cipherMode);
 		try (FileInputStream inputStream = new FileInputStream(inputFile);
 				FileOutputStream outputStream = new FileOutputStream(outputFile);) {
 			byte[] inputBytes = new byte[(int) inputFile.length()];
@@ -62,13 +49,29 @@ public class JavaCryptoUtil {
 			outputBytes = cipher.doFinal(inputBytes);
 			outputStream.write(outputBytes);
 		} catch (IOException e) {
-			throw new InOutException(" stream problem", e.getCause());
+			throw new InOutException("No success in crypting the file " + inputFile, e.getCause());
 		} catch (IllegalBlockSizeException e) {
-			throw new CryptoException("illegal block size", e.getCause());
+			throw new CryptoException("Illegal block size", e.getCause());
 		} catch (BadPaddingException e) {
-			throw new PaddingException("bad padding", e.getCause());
+			throw new PaddingException("Bad Cipher padding", e.getCause());
 		}
 
 	}
 
+	private static Cipher initCipher(SecretKey skey, String algorithm, int cipherMode)
+			throws AlgorithmNotFoundException, PaddingException, KeyNotFoundException {
+		SecretKey secretKey = new SecretKeySpec(skey.getEncoded(), skey.getAlgorithm());
+		try {
+			Cipher cipher = Cipher.getInstance(algorithm);
+			cipher.init(cipherMode, secretKey);
+			return cipher;
+		} catch (NoSuchAlgorithmException e) {
+			throw new AlgorithmNotFoundException();
+		} catch (NoSuchPaddingException e) {
+			throw new PaddingException("There is no Cipher padding ", e.getCause());
+		} catch (InvalidKeyException e) {
+			throw new KeyNotFoundException();
+		}
+
+	}
 }

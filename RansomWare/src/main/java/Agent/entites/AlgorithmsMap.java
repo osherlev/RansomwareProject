@@ -1,6 +1,5 @@
 package Agent.entites;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import Agent.EncryptionAlgo.AES;
@@ -12,14 +11,13 @@ import Agent.EncryptionAlgo.Twofish;
 public class AlgorithmsMap {
 	private static Map<String, CryptoAlgorithm> algorithmMap;
 
-
-	public static HashMap<String, CryptoAlgorithm> getMap() {
+	public static Map<String, CryptoAlgorithm> getMap() {
 
 		algorithmMap.put("AES", new AES());
 		algorithmMap.put("Blowfish", new Blowfish());
 		algorithmMap.put("Twofish", new Twofish());
 		algorithmMap.put("DESede", new DESede());
 
-		return (HashMap<String, CryptoAlgorithm>) algorithmMap;
+		return algorithmMap;
 	}
 }

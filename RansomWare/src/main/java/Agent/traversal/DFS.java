@@ -1,6 +1,6 @@
 package Agent.traversal;
 
-import java.util.LinkedList;
+
 import java.util.Stack;
 
 public class DFS<T> implements Traverse<T> {
