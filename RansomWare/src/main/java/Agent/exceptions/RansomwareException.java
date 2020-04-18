@@ -2,11 +2,6 @@ package Agent.exceptions;
 
 public class RansomwareException extends Exception {
 
-	
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 326273912718318229L;
 
 	public RansomwareException() {

