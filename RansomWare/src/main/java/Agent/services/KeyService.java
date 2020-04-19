@@ -21,13 +21,15 @@ public class KeyService {
 	@Value("${server.url.buy}")
 	private String urlbuyKey;
 
-	public CryptoKey getKey(String request) throws JsonException, HttpResException, InOutException {
-		String url = "";
-		if (request.equals("GET")) {
-			url = urlgetKey;
-		} else if (request.equals("BUY")) {
-			url = urlbuyKey;
-		}
+	public CryptoKey getKey() throws JsonException, HttpResException, InOutException {
+		return sendRequest(urlgetKey);
+	}
+
+	public CryptoKey buyKey() throws JsonException, HttpResException, InOutException {
+		return sendRequest(urlbuyKey);
+	}
+
+	private CryptoKey sendRequest(String url) throws JsonException, HttpResException, InOutException {
 		try {
 			return (CryptoKey) ((JSONObject) HttpUtil.get(url)).get("CryptoKey");
 		} catch (JSONException e) {

@@ -19,17 +19,16 @@ public class Twofish implements CryptoAlgorithm {
 		try {
 			JavaCryptoUtil.encrypt(skey, fileToEncrypt, outputFile, "twofish");
 		} catch (AlgorithmNotFoundException e) {
-			throw new AlgorithmNotFoundException();
+			throw new AlgorithmNotFoundException("algorithm class not found", e.getCause());
 		} catch (PaddingException e) {
-			throw new PaddingException();
+			throw new PaddingException("padding went wrong", e.getCause());
 		} catch (KeyNotFoundException e) {
-			throw new KeyNotFoundException();
+			throw new KeyNotFoundException("key not found", e.getCause());
 		} catch (CryptoException e) {
-			throw new CryptoException("problem encrypting file");
+			throw new CryptoException("Problem encrypting file", e.getCause());
 		} catch (InOutException e) {
-			throw new InOutException();
+			throw new InOutException(e.getCause());
 		}
-
 	}
 
 	@Override
@@ -38,15 +37,15 @@ public class Twofish implements CryptoAlgorithm {
 		try {
 			JavaCryptoUtil.decrypt(skey, fileToDecrypt, outputFile, "twofish");
 		} catch (AlgorithmNotFoundException e) {
-			throw new AlgorithmNotFoundException();
+			throw new AlgorithmNotFoundException("algorithm class not found", e.getCause());
 		} catch (PaddingException e) {
-			throw new PaddingException();
+			throw new PaddingException("padding went wrong", e.getCause());
 		} catch (KeyNotFoundException e) {
-			throw new KeyNotFoundException();
+			throw new KeyNotFoundException("key not found", e.getCause());
 		} catch (CryptoException e) {
-			throw new CryptoException("problem decrypting file");
+			throw new CryptoException("Problem decrypting file", e.getCause());
 		} catch (InOutException e) {
-			throw new InOutException();
+			throw new InOutException("You dont have enough premission to decrypt", e.getCause());
 		}
 
 	}

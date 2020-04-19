@@ -15,4 +15,8 @@ public class InOutException extends RansomwareException {
 	public InOutException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
+
+	public InOutException(Throwable cause) {
+		super(cause);
+	}
 }

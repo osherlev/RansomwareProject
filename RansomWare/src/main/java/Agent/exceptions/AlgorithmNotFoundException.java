@@ -11,4 +11,8 @@ public class AlgorithmNotFoundException extends RansomwareException {
 	public AlgorithmNotFoundException() {
 		super("algorithm did not found ");
 	}
+
+	public AlgorithmNotFoundException(String string, Throwable cause) {
+		super(string, cause);
+	}
 }

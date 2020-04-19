@@ -18,15 +18,15 @@ public class Blowfish implements CryptoAlgorithm {
 		try {
 			JavaCryptoUtil.encrypt(skey, fileToEncrypt, outputFile, "Blowfish/ECB/PKCS5Padding");
 		} catch (AlgorithmNotFoundException e) {
-			throw new AlgorithmNotFoundException();
+			throw new AlgorithmNotFoundException("algorithm class not found", e.getCause());
 		} catch (PaddingException e) {
-			throw new PaddingException();
+			throw new PaddingException("padding went wrong", e.getCause());
 		} catch (KeyNotFoundException e) {
-			throw new KeyNotFoundException();
+			throw new KeyNotFoundException("key not found", e.getCause());
 		} catch (CryptoException e) {
-			throw new CryptoException("problem encrypting file");
+			throw new CryptoException("Problem encrypting file", e.getCause());
 		} catch (InOutException e) {
-			throw new InOutException();
+			throw new InOutException(e.getCause());
 		}
 
 	}
@@ -37,15 +37,15 @@ public class Blowfish implements CryptoAlgorithm {
 		try {
 			JavaCryptoUtil.decrypt(skey, fileToDecrypt, outputFile, "Blowfish/ECB/PKCS5Padding");
 		} catch (AlgorithmNotFoundException e) {
-			throw new AlgorithmNotFoundException();
+			throw new AlgorithmNotFoundException("algorithm class not found", e.getCause());
 		} catch (PaddingException e) {
-			throw new PaddingException();
+			throw new PaddingException("padding went wrong", e.getCause());
 		} catch (KeyNotFoundException e) {
-			throw new KeyNotFoundException();
+			throw new KeyNotFoundException("key not found", e.getCause());
 		} catch (CryptoException e) {
-			throw new CryptoException("problem decrypting file");
+			throw new CryptoException("Problem decrypting file", e.getCause());
 		} catch (InOutException e) {
-			throw new InOutException();
+			throw new InOutException("You dont have enough premission to decrypt", e.getCause());
 		}
 	}
 

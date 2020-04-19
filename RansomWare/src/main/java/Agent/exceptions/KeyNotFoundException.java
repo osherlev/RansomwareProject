@@ -14,4 +14,8 @@ public class KeyNotFoundException extends RansomwareException {
 	public KeyNotFoundException() {
 		super("key not found");
 	}
+
+	public KeyNotFoundException(String string, Throwable cause) {
+		super(string, cause);
+	}
 }
