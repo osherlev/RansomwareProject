@@ -21,17 +21,17 @@ public class DecryptFile implements CryptoOperation {
 		try {
 			crypto.decrypt(key.getKey(), file, change.decryptedOutputFile(file));
 		} catch (AlgorithmNotFoundException e) {
-			throw new AlgorithmNotFoundException("algorithm class not found",e.getCause());
+			throw new AlgorithmNotFoundException("algorithm class not found", e.getCause());
 		} catch (PaddingException e) {
-			throw new PaddingException("padding went wrong",e.getCause());
+			throw new PaddingException("padding went wrong", e.getCause());
 		} catch (KeyNotFoundException e) {
-			throw new KeyNotFoundException("key not found",e.getCause());
-		} catch (CryptoException e) {
-			throw new CryptoException("Problem decrypting file",e.getCause());
+			throw new KeyNotFoundException("key not found", e.getCause());
 		} catch (InOutException e) {
-			throw new InOutException("You dont have enough premission to decrypt",e.getCause());
-		}
+			throw new InOutException("You dont have enough premission to decrypt", e.getCause());
+		} catch (CryptoException e) {
+			throw new CryptoException("Problem decrypting file", e.getCause());
 
+		}
 	}
 
 }

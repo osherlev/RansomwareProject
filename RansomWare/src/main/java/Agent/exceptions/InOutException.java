@@ -1,6 +1,6 @@
 package Agent.exceptions;
 
-public class InOutException extends RansomwareException {
+public class InOutException extends CryptoException {
 
 	private static final long serialVersionUID = 1598225848081033159L;
 

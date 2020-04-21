@@ -1,6 +1,6 @@
 package Agent.exceptions;
 
-public class JsonException extends RansomwareException {
+public class JsonException extends CryptoException {
 
 	private static final long serialVersionUID = 7312296222409363931L;
 

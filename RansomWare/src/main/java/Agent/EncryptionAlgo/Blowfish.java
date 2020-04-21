@@ -23,10 +23,10 @@ public class Blowfish implements CryptoAlgorithm {
 			throw new PaddingException("padding went wrong", e.getCause());
 		} catch (KeyNotFoundException e) {
 			throw new KeyNotFoundException("key not found", e.getCause());
-		} catch (CryptoException e) {
-			throw new CryptoException("Problem encrypting file", e.getCause());
 		} catch (InOutException e) {
 			throw new InOutException(e.getCause());
+		} catch (CryptoException e) {
+			throw new CryptoException("Problem encrypting file", e.getCause());
 		}
 
 	}
@@ -42,10 +42,10 @@ public class Blowfish implements CryptoAlgorithm {
 			throw new PaddingException("padding went wrong", e.getCause());
 		} catch (KeyNotFoundException e) {
 			throw new KeyNotFoundException("key not found", e.getCause());
-		} catch (CryptoException e) {
-			throw new CryptoException("Problem decrypting file", e.getCause());
 		} catch (InOutException e) {
 			throw new InOutException("You dont have enough premission to decrypt", e.getCause());
+		} catch (CryptoException e) {
+			throw new CryptoException("Problem decrypting file", e.getCause());
 		}
 	}
 
