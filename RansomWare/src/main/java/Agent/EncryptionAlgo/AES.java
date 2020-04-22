@@ -14,7 +14,7 @@ public class AES implements CryptoAlgorithm {
 
 	@Override
 	public void encrypt(SecretKey skey, File fileToEncrypt, File outputFile)
-			throws AlgorithmNotFoundException, PaddingException, KeyNotFoundException, CryptoException, InOutException {
+			throws  CryptoException {
 		try {
 			JavaCryptoUtil.encrypt(skey, fileToEncrypt, outputFile, "AES/ECB/PKCS5Padding");
 		} catch (AlgorithmNotFoundException e) {
@@ -34,7 +34,7 @@ public class AES implements CryptoAlgorithm {
 
 	@Override
 	public void decrypt(SecretKey skey, File fileToDecrypt, File outputFile)
-			throws AlgorithmNotFoundException, PaddingException, KeyNotFoundException, CryptoException, InOutException {
+			throws CryptoException {
 		try {
 			JavaCryptoUtil.encrypt(skey, fileToDecrypt, outputFile, "AES/ECB/PKCS5Padding");
 		} catch (AlgorithmNotFoundException e) {

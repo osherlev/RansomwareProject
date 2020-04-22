@@ -14,8 +14,7 @@ import Agent.exceptions.PaddingException;
 public class Twofish implements CryptoAlgorithm {
 
 	@Override
-	public void encrypt(SecretKey skey, File fileToEncrypt, File outputFile)
-			throws AlgorithmNotFoundException, PaddingException, KeyNotFoundException, CryptoException, InOutException {
+	public void encrypt(SecretKey skey, File fileToEncrypt, File outputFile) throws CryptoException {
 		try {
 			JavaCryptoUtil.encrypt(skey, fileToEncrypt, outputFile, "twofish");
 		} catch (AlgorithmNotFoundException e) {
@@ -32,8 +31,7 @@ public class Twofish implements CryptoAlgorithm {
 	}
 
 	@Override
-	public void decrypt(SecretKey skey, File fileToDecrypt, File outputFile)
-			throws AlgorithmNotFoundException, PaddingException, KeyNotFoundException, CryptoException, InOutException {
+	public void decrypt(SecretKey skey, File fileToDecrypt, File outputFile) throws CryptoException {
 		try {
 			JavaCryptoUtil.decrypt(skey, fileToDecrypt, outputFile, "twofish");
 		} catch (AlgorithmNotFoundException e) {
