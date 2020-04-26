@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -27,7 +26,6 @@ public class JavaCryptoUtil {
 
 	public static void encrypt(SecretKey skey, File fileToEncrypt, File outPutFile, String algorithm)
 			throws CryptoException {
-
 		doCrypto(skey, fileToEncrypt, Cipher.ENCRYPT_MODE, outPutFile, algorithm);
 	}
 
@@ -48,8 +46,10 @@ public class JavaCryptoUtil {
 			byte[] outputBytes = null;
 			outputBytes = cipher.doFinal(inputBytes);
 			outputStream.write(outputBytes);
+			inputStream.close();
+			inputFile.deleteOnExit();
 		} catch (IOException e) {
-			throw new InvalidCryptoKeyException("Given key does not match the algorithm requirements", e.getCause());
+			throw new InvalidCryptoKeyException("You do not have enough premissions to do this", e.getCause());
 		} catch (IllegalBlockSizeException e) {
 			throw new InvalidCryptoKeyException(
 					"Given key does not match the algorithm requirements -Illegal block size", e.getCause());
@@ -62,18 +62,16 @@ public class JavaCryptoUtil {
 
 	private static Cipher initCipher(SecretKey skey, String algorithm, int cipherMode)
 			throws AlgorithmNotFoundException, PaddingException, KeyNotFoundException {
-		SecretKey secretKey = new SecretKeySpec(skey.getEncoded(), skey.getAlgorithm());
 		try {
 			Cipher cipher = Cipher.getInstance(algorithm);
-			cipher.init(cipherMode, secretKey);
+			cipher.init(cipherMode, new SecretKeySpec(skey.toString().getBytes(), algorithm));
 			return cipher;
-		} catch (NoSuchAlgorithmException e) {
+		} catch (NoSuchAlgorithmException e1) {
 			throw new AlgorithmNotFoundException();
-		} catch (NoSuchPaddingException e) {
-			throw new PaddingException("There is no Cipher padding ", e.getCause());
+		} catch (NoSuchPaddingException e1) {
+			throw new PaddingException(e1.getMessage(),e1.getCause());
 		} catch (InvalidKeyException e) {
-			throw new KeyNotFoundException();
+			throw new KeyNotFoundException("invalid key exception -"+e.getMessage(),e.getCause());
 		}
-
 	}
 }

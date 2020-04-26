@@ -2,6 +2,8 @@ package Agent.cryptFile;
 
 import java.io.File;
 
+import javax.inject.Inject;
+
 import Agent.EncryptionAlgo.ChangeFilesName;
 import Agent.EncryptionAlgo.CryptoAlgorithm;
 import Agent.entites.CryptoKey;
@@ -12,25 +14,15 @@ import Agent.exceptions.KeyNotFoundException;
 import Agent.exceptions.PaddingException;
 
 public class EncryptFile implements CryptoOperation {
+
+	@Inject
 	private ChangeFilesName change;
-
 	@Override
-	public void operate(CryptoKey key, File file, CryptoAlgorithm crypto)
-			throws InOutException, AlgorithmNotFoundException, KeyNotFoundException, CryptoException, PaddingException {
-
+	public void operate(CryptoKey key, File file, CryptoAlgorithm crypto) throws CryptoException {
 		try {
-			crypto.encrypt(key.getKey(), file, change.encryptedOutputFile(file));
-		} catch (AlgorithmNotFoundException e) {
-			throw new AlgorithmNotFoundException("algorithm class not found", e.getCause());
-		} catch (PaddingException e) {
-			throw new PaddingException("padding went wrong", e.getCause());
-		} catch (KeyNotFoundException e) {
-			throw new KeyNotFoundException("key not found", e.getCause());
-		} catch (InOutException e) {
-			throw new InOutException(e.getCause());
-		} catch (CryptoException e) {
+			crypto.encrypt(key.get_key(), file, change.encryptedOutputFile(file));
+		} catch (AlgorithmNotFoundException | PaddingException | KeyNotFoundException | InOutException e) {
 			throw new CryptoException("Problem encrypting file", e.getCause());
-
 		}
 	}
 }
