@@ -20,4 +20,6 @@ public class AlgorithmsMap {
 
 		return algorithmMap;
 	}
+
+
 }

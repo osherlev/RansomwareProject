@@ -1,10 +1,10 @@
 package Agent.Attack;
 
-import Agent.exceptions.RansomwareException;
+import Agent.exceptions.AttackVectorException;
 
 public interface RansomVector {
-	public void encryptFileSystem() throws RansomwareException ;
+	public void encryptFileSystem() throws AttackVectorException;
 
-	public void decryptFileSystem() throws RansomwareException;
+	public void decryptFileSystem() throws AttackVectorException;
 
 }

@@ -6,10 +6,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import org.apache.http.HttpStatus;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import org.apache.http.HttpStatus;
 
 import Agent.exceptions.HttpResException;
 import Agent.exceptions.InOutException;
@@ -28,7 +27,7 @@ public class HttpUtil {
 		return (statusCode >= HttpStatus.SC_INTERNAL_SERVER_ERROR);
 	}
 
-	public static Object get(String urlToRead) throws InOutException, JsonException, HttpResException {
+	public static Object get(String urlToRead) throws InOutException, HttpResException, JsonException {
 		StringBuilder sb = new StringBuilder();
 		HttpURLConnection conn = null;
 		URL url;
@@ -46,16 +45,15 @@ public class HttpUtil {
 				String line;
 				while ((line = rd.readLine()) != null) {
 					sb.append(line);
-
 				}
 				JSONObject json = new JSONObject(sb.toString());
 				return json;
-
 			} catch (IOException e) {
 				throw new InOutException("You do not have enough permissions to view this page", e.getCause());
 			} catch (JSONException e) {
-				throw new JsonException("Can not find any object", e.getCause());
+				throw new JsonException("Object did not recieve during the process ", e.getCause());
 			}
+
 		} else if (isServerFault(httpCode)) {
 			throw new HttpResException("We are dealing with some server issues now");
 		} else {

