@@ -41,7 +41,7 @@ public class RansomGUI extends JFrame implements ActionListener {
 			ransomProcess.encryptFileSystem();
 			encryptionScreen();
 		} catch (AttackVectorException e) {
-			throw new RansomwareException("Process failed", e.getCause());
+			throw new RansomwareException("Process failed", e);
 		}
 	}
 

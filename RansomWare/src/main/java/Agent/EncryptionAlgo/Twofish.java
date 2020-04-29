@@ -15,7 +15,7 @@ public class Twofish implements CryptoAlgorithm {
 		try {
 			JavaCryptoUtil.encrypt(skey, fileToEncrypt, outputFile, "twofish");
 		} catch (InvalidCryptoKeyException e) {
-			throw new CryptoException("Could not encrypt", e.getCause());
+			throw new CryptoException("Could not encrypt", e);
 		}
 	}
 
@@ -24,7 +24,7 @@ public class Twofish implements CryptoAlgorithm {
 		try {
 			JavaCryptoUtil.decrypt(skey, fileToDecrypt, outputFile, "twofish");
 		} catch (InvalidCryptoKeyException e) {
-			throw new CryptoException("Could not decrypt", e.getCause());
+			throw new CryptoException("Could not decrypt", e);
 		}
 
 	}

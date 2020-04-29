@@ -2,24 +2,25 @@ package app.bl;
 
 import java.security.SecureRandom;
 
-import javax.inject.Inject;
-
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import app.entities.CryptoKey;
 import app.exceptions.AlgorithmNotFoundException;
+import app.exceptions.EncryptionLogicException;
 import app.exceptions.InvalidCryptoKeyException;
-import app.exceptions.ProcessFailedException;
 import app.keys.KeyManagement;
 
-@Service
+@Component
 public class EncryptionLogic {
 
 	@Value("${algorithms.arr}")
 	private String[] algorithmsArr;
-	@Inject
 	private KeyManagement km;
+
+	public EncryptionLogic() {
+		km = new KeyManagement();
+	}
 
 	public String randomAlgorithm() throws AlgorithmNotFoundException {
 
@@ -33,15 +34,14 @@ public class EncryptionLogic {
 
 	}
 
-	public CryptoKey startProcess(String ip) throws ProcessFailedException, InvalidCryptoKeyException {
-		
+	public CryptoKey startProcess(String ip) throws EncryptionLogicException {
+
 		try {
 			String chosenAlgo = randomAlgorithm();
 			return (km.createAndSaveKey(chosenAlgo, ip)); // Create and saves Key
-		} catch (AlgorithmNotFoundException e1) {
-			throw new InvalidCryptoKeyException("Algorithm not found", e1.getCause());
-		} catch (InvalidCryptoKeyException e) {
-			throw new ProcessFailedException("Creating the key went Wrong", e.getCause());
+		} catch (AlgorithmNotFoundException | InvalidCryptoKeyException e) {
+			throw new EncryptionLogicException("Encryption starting process failed", e);
+
 		}
 	}
 

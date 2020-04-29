@@ -14,7 +14,7 @@ public class AES implements CryptoAlgorithm {
 		try {
 			JavaCryptoUtil.encrypt(skey, fileToEncrypt, outputFile, "AES");
 		} catch (InvalidCryptoKeyException e) {
-			throw new CryptoException("Could not encrypt", e.getCause());
+			throw new CryptoException("Could not encrypt", e);
 		}
 
 	}
@@ -24,7 +24,7 @@ public class AES implements CryptoAlgorithm {
 		try {
 			JavaCryptoUtil.decrypt(skey, fileToDecrypt, outputFile, "AES");
 		} catch (InvalidCryptoKeyException e) {
-			throw new CryptoException("Could not decrypt", e.getCause());
+			throw new CryptoException("Could not decrypt", e);
 		}
 	}
 

@@ -1,7 +1,5 @@
 package app.controllers;
 
-import java.security.NoSuchAlgorithmException;
-
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,15 +11,12 @@ import app.bl.DecryptionLogic;
 import app.bl.EncryptionLogic;
 import app.entities.Bitcoin;
 import app.entities.CryptoKey;
-import app.exceptions.AlgorithmNotFoundException;
-import app.exceptions.InvalidCryptoKeyException;
-import app.exceptions.KeyNotFoundException;
+import app.exceptions.DecryptionLogicException;
+import app.exceptions.EncryptionLogicException;
 import app.exceptions.PaymentNotFoundException;
-import app.exceptions.ProcessFailedException;
 import app.repositories.KeyRepository;
 
 @RestController
-
 public class KeyController {
 	@Inject
 	private EncryptionLogic encLogic;
@@ -31,15 +26,13 @@ public class KeyController {
 	private KeyRepository repository;
 
 	@GetMapping("/requestKey")
-	public CryptoKey saveKey(HttpServletRequest request) throws AlgorithmNotFoundException, NoSuchAlgorithmException, ProcessFailedException, InvalidCryptoKeyException {
+	public CryptoKey saveKey(HttpServletRequest request) throws EncryptionLogicException {
 		return repository.save(encLogic.startProcess(request.getRemoteAddr()));
-
 	}
 
 	@GetMapping("/buyKey")
 	public CryptoKey buyKey(@RequestParam Bitcoin btc, HttpServletRequest request)
-			throws KeyNotFoundException, PaymentNotFoundException {
+			throws DecryptionLogicException, PaymentNotFoundException {
 		return decLogic.getKey(request.getRemoteAddr(), btc);
-
 	}
 }

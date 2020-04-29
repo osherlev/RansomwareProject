@@ -7,7 +7,8 @@ import javax.crypto.SecretKey;
 
 import app.exceptions.AlgorithmNotFoundException;
 
-public class RansomwareKeyGenerator {
+public class RansomwareKeyGenerator implements SecretKeyGenerator {
+	@Override
 	public SecretKey generateKey(String chosenAlgorithm) throws AlgorithmNotFoundException {
 
 		// Creating a KeyGenerator object
@@ -15,7 +16,7 @@ public class RansomwareKeyGenerator {
 
 		// Creating a SecureRandom object
 		SecureRandom secRandom = new SecureRandom();
-		
+
 		try {
 			keyGen = KeyGenerator.getInstance(chosenAlgorithm);
 		} catch (NoSuchAlgorithmException e) {

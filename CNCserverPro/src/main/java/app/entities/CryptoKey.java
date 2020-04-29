@@ -21,10 +21,10 @@ import lombok.Setter;
 public class CryptoKey {
 
 	@Id
-	String ip;
+	private String ip;
 	@Column(nullable = false)
-	SecretKey _key;
+	private SecretKey _key;
 	@Column(nullable = false)
-	String algorithm;
+	private String algorithm;
 
 }

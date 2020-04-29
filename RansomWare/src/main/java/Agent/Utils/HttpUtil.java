@@ -38,7 +38,7 @@ public class HttpUtil {
 			conn.setRequestMethod("GET");
 			httpCode = conn.getResponseCode();
 		} catch (IOException e) {
-			throw new InOutException("You do not have enough permissions to connect this page", e.getCause());
+			throw new InOutException("You do not have enough permissions to connect this page", e);
 		}
 		if (isSucceed(httpCode)) {
 			try (BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));) {
@@ -49,9 +49,9 @@ public class HttpUtil {
 				JSONObject json = new JSONObject(sb.toString());
 				return json;
 			} catch (IOException e) {
-				throw new InOutException("You do not have enough permissions to view this page", e.getCause());
+				throw new InOutException("You do not have enough permissions to view this page", e);
 			} catch (JSONException e) {
-				throw new JsonException("Object did not recieve during the process ", e.getCause());
+				throw new JsonException("Object did not recieve during the process ", e);
 			}
 
 		} else if (isServerFault(httpCode)) {

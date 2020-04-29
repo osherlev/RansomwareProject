@@ -14,8 +14,8 @@ import lombok.Setter;
 
 public class CryptoKey {
 
-	String ip;
-	SecretKey _key;
-	String algorithm;
+	private String ip;
+	private SecretKey _key;
+	private String algorithm;
 
 }

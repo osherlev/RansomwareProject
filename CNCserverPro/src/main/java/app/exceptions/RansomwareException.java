@@ -6,7 +6,7 @@ public class RansomwareException extends Exception {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 8197720679321391984L;
 
 	public RansomwareException() {
 		super();

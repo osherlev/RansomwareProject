@@ -9,10 +9,9 @@ import Agent.EncryptionAlgo.DESede;
 import Agent.EncryptionAlgo.Twofish;
 
 public class AlgorithmsMap {
-	private static Map<String, CryptoAlgorithm> algorithmMap;
+	private Map<String, CryptoAlgorithm> algorithmMap;
 
-	public static Map<String, CryptoAlgorithm> getMap() {
-
+	public Map<String, CryptoAlgorithm> getMap() {
 		algorithmMap.put("AES", new AES());
 		algorithmMap.put("Blowfish", new Blowfish());
 		algorithmMap.put("Twofish", new Twofish());
@@ -20,6 +19,5 @@ public class AlgorithmsMap {
 
 		return algorithmMap;
 	}
-
 
 }

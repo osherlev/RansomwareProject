@@ -37,7 +37,7 @@ public class JavaCryptoUtil {
 		try {
 			cipher = initCipher(skey, algorithm, cipherMode);
 		} catch (CipherException e) {
-			throw new InvalidCryptoKeyException("Cipher did not initalizied", e.getCause());
+			throw new InvalidCryptoKeyException("Cipher did not initalizied", e);
 		}
 		try (FileInputStream inputStream = new FileInputStream(inputFile);
 				FileOutputStream outputStream = new FileOutputStream(outputFile);) {
@@ -48,13 +48,13 @@ public class JavaCryptoUtil {
 			inputStream.close();
 			inputFile.delete();
 		} catch (IOException e) {
-			throw new InvalidCryptoKeyException("You do not have enough premissions to do this", e.getCause());
+			throw new InvalidCryptoKeyException("You do not have enough premissions to do this", e);
 		} catch (IllegalBlockSizeException e) {
 			throw new InvalidCryptoKeyException(
-					"Given key does not match the algorithm requirements -Illegal block size", e.getCause());
+					"Given key does not match the algorithm requirements -Illegal block size", e);
 		} catch (BadPaddingException e) {
 			throw new InvalidCryptoKeyException(
-					"Given key does not match the algorithm requirements - Bad Cipher padding", e.getCause());
+					"Given key does not match the algorithm requirements - Bad Cipher padding", e);
 		}
 
 	}
@@ -66,7 +66,7 @@ public class JavaCryptoUtil {
 			cipher.init(cipherMode, key);
 			return cipher;
 		} catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException e) {
-			throw new CipherException("Cipher initalization went wrong", e.getCause());
+			throw new CipherException("Cipher initalization went wrong", e);
 		}
 	}
 }

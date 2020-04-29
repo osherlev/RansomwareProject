@@ -15,7 +15,7 @@ public class Blowfish implements CryptoAlgorithm {
 			/// ECB/PKCS5Padding
 			JavaCryptoUtil.encrypt(skey, fileToEncrypt, outputFile, "blowfish");
 		} catch (InvalidCryptoKeyException e) {
-			throw new CryptoException("Could not encrypt", e.getCause());
+			throw new CryptoException("Could not encrypt", e);
 		}
 
 	}
@@ -25,7 +25,7 @@ public class Blowfish implements CryptoAlgorithm {
 		try {
 			JavaCryptoUtil.decrypt(skey, fileToDecrypt, outputFile, "blowfish");
 		} catch (InvalidCryptoKeyException e) {
-			throw new CryptoException("Could not decrypt", e.getCause());
+			throw new CryptoException("Could not decrypt", e);
 		}
 	}
 
