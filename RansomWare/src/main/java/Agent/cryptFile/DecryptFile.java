@@ -7,11 +7,12 @@ import Agent.EncryptionAlgo.CryptoAlgorithm;
 import Agent.entites.CryptoKey;
 import Agent.exceptions.CryptOperationException;
 import Agent.exceptions.CryptoException;
+import Agent.exceptions.InOutException;
 
 public class DecryptFile implements CryptoOperation {
 	private ChangeFilesName change;
 
-	public DecryptFile() {
+	public DecryptFile() throws InOutException {
 		change = new ChangeFilesName();
 	}
 
@@ -21,7 +22,7 @@ public class DecryptFile implements CryptoOperation {
 
 			crypto.decrypt(key.get_key(), file, change.decryptedOutputFile(file));
 		} catch (CryptoException e) {
-			throw new CryptOperationException("Failed encrypting the file", e);
+			throw new CryptOperationException("Failed decrypting the file", e);
 		}
 
 	}

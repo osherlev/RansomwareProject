@@ -7,11 +7,12 @@ import Agent.EncryptionAlgo.CryptoAlgorithm;
 import Agent.entites.CryptoKey;
 import Agent.exceptions.CryptOperationException;
 import Agent.exceptions.CryptoException;
+import Agent.exceptions.InOutException;
 
 public class EncryptFile implements CryptoOperation {
 	private ChangeFilesName change;
 
-	public EncryptFile() {
+	public EncryptFile() throws InOutException {
 		change = new ChangeFilesName();
 	}
 
