@@ -1,43 +1,31 @@
 package Agent.EncryptionAlgo;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 
+import Agent.configuration.ConfigureProps;
+import Agent.exceptions.CryptOperationException;
 import Agent.exceptions.InOutException;
-import Agent.services.ConfigureProps;
 
-public class ChangeFilesName implements ConfigureProps {
+public class ChangeFilesName {
 
 	private String decryptedFileExtension;
 	private String encryptedFileExtension;
-	private Properties prop;
-	private InputStream is;
 
-	public ChangeFilesName() throws InOutException {
-		getProperties();
-	}
-
-	public File decryptedOutputFile(File fileToDecrypt) {
-
-		return new File(fileToDecrypt.getAbsolutePath().replaceAll(encryptedFileExtension, decryptedFileExtension));
-	}
-
-	public File encryptedOutputFile(File fileToencrypt) {
-		return new File(fileToencrypt.getAbsolutePath().concat(encryptedFileExtension));
-	}
-
-	@Override
-	public void getProperties() throws InOutException {
-		prop = new Properties();
-		is = getClass().getResourceAsStream("/application.properties");
+	public File decryptedOutputFile(File fileToDecrypt) throws CryptOperationException {
 		try {
-			prop.load(is);
-			encryptedFileExtension = prop.getProperty("File.encrypted");
-			decryptedFileExtension = prop.getProperty("File.decrypted");
-		} catch (IOException e) {
-			throw new InOutException("Could not find properties file", e);
+			decryptedFileExtension = ConfigureProps.getPropsValue("File.decrypted");
+			return new File(fileToDecrypt.getAbsolutePath().replaceAll(encryptedFileExtension, decryptedFileExtension));
+		} catch (InOutException e) {
+			throw new CryptOperationException("Could not get encrypt file extention",e);
+		}
+	}
+
+	public File encryptedOutputFile(File fileToencrypt) throws CryptOperationException, InOutException {
+		try {
+			encryptedFileExtension = ConfigureProps.getPropsValue("File.encrypted");
+			return new File(fileToencrypt.getAbsolutePath().concat(encryptedFileExtension));
+		} catch (InOutException e) {
+			throw new CryptOperationException("Could not get decrypt file extention",e);
 		}
 	}
 
