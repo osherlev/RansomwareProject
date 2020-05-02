@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.hibernate.Hibernate;
-
 import Agent.exceptions.InOutException;
 
 public class ConfigureProps {
@@ -15,7 +13,7 @@ public class ConfigureProps {
 
 		try (InputStream is = ConfigureProps.class.getResourceAsStream("/application.properties");) {
 			properties = new Properties();
-			if (!(Hibernate.isInitialized(properties))) {
+			if (properties.isEmpty()) {
 				properties.load(is);
 			}
 			return properties.getProperty(key);
