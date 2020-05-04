@@ -11,7 +11,7 @@ public class ConfigureProps {
 	private static Optional<Properties> properties;
 
 	public static String getPropsValue(String key) throws InOutException {
-		if (properties == null) {
+		if (!(Optional.ofNullable(properties).isPresent())) {
 			try (InputStream is = ConfigureProps.class.getResourceAsStream("/application.properties");) {
 				{
 					properties = Optional.ofNullable(new Properties());
