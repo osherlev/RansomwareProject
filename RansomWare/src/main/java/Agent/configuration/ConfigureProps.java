@@ -8,10 +8,10 @@ import java.util.Properties;
 import Agent.exceptions.InOutException;
 
 public class ConfigureProps {
-	private static Optional<Properties> properties;
+	private static Optional<Properties> properties=Optional.empty();
 
 	public static String getPropsValue(String key) throws InOutException {
-		if (!(Optional.ofNullable(properties).isPresent())) {
+		if (!(properties.isPresent())) {
 			try (InputStream is = ConfigureProps.class.getResourceAsStream("/application.properties");) {
 				{
 					properties = Optional.ofNullable(new Properties());
