@@ -22,24 +22,12 @@ public class JavaCryptoUtil {
 	public static void encrypt(SecretKey skey, File fileToEncrypt, File outPutFile, String algorithm)
 			throws InvalidCryptoKeyException {
 
-		doCrypto(unwrapKey(skey, algorithm), fileToEncrypt, Cipher.ENCRYPT_MODE, outPutFile, algorithm);
+		doCrypto(skey, fileToEncrypt, Cipher.ENCRYPT_MODE, outPutFile, algorithm);
 	}
 
 	public static void decrypt(SecretKey skey, File fileToDecrypt, File outPutFile, String algorithm)
 			throws InvalidCryptoKeyException {
-
-		doCrypto(unwrapKey(skey, algorithm), fileToDecrypt, Cipher.DECRYPT_MODE, outPutFile, algorithm);
-	}
-
-	private static SecretKey unwrapKey(SecretKey wrappedKey, String algorithm) throws InvalidCryptoKeyException {
-		try {
-			Cipher cipher = initCipher(wrappedKey, algorithm, Cipher.UNWRAP_MODE);
-			wrappedKey = (SecretKey) cipher.unwrap(wrappedKey.getEncoded(), algorithm, Cipher.SECRET_KEY);
-			return wrappedKey;
-		} catch (InvalidKeyException | NoSuchAlgorithmException | CipherException e) {
-			throw new InvalidCryptoKeyException("Unwrapping private key went wrong - " + e.getMessage());
-		}
-
+		doCrypto(skey, fileToDecrypt, Cipher.DECRYPT_MODE, outPutFile, algorithm);
 	}
 
 	private static void doCrypto(SecretKey skey, File inputFile, int cipherMode, File outputFile, String algorithm)
